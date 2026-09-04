@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,16 +8,30 @@
   <link rel="icon" href="icon-512.png" type="image/png">
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: Tahoma, Arial, sans-serif;
       text-align: center;
-      margin: 50px;
+      margin: 20px;
+      background-color: #f4f6f8;
     }
-    h1 {
+    header {
+      background-color: #3498db;
+      color: white;
+      padding: 15px;
+      border-radius: 5px;
+    }
+    section {
+      margin: 20px 0;
+      padding: 15px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    h2 {
       color: #2c3e50;
     }
     button {
       padding: 10px 20px;
-      margin-top: 20px;
+      margin-top: 10px;
       background-color: #3498db;
       color: white;
       border: none;
@@ -30,9 +44,28 @@
   </style>
 </head>
 <body>
-  <h1>Welcome to MUDARAKA</h1>
-  <p>This is a Progressive Web App.</p>
-  <button onclick="alert('MUDARAKA is working!')">Click Me</button>
+  <header>
+    <h1>مرحباً بك في MUDARAKA</h1>
+    <p>تطبيق الرد على العروض والاستشارات الفنية</p>
+  </header>
+
+  <section>
+    <h2>📦 الطلبات</h2>
+    <p>هنا يمكنك متابعة وإدارة الطلبات المقدمة.</p>
+    <button onclick="alert('قسم الطلبات قيد التطوير')">عرض الطلبات</button>
+  </section>
+
+  <section>
+    <h2>💡 الاستشارات الفنية</h2>
+    <p>أرسل أو استقبل استشارات فنية من فريقك أو الموردين.</p>
+    <button onclick="alert('قسم الاستشارات قيد التطوير')">فتح الاستشارات</button>
+  </section>
+
+  <section>
+    <h2>📞 التواصل مع الموردين</h2>
+    <p>تواصل مباشرة مع الموردين عبر البريد أو النماذج.</p>
+    <button onclick="alert('قسم التواصل قيد التطوير')">بدء التواصل</button>
+  </section>
 
   <script>
     if ('serviceWorker' in navigator) {
