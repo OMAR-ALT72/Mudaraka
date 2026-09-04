@@ -4,16 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MUDARAKA</title>
-  <!-- ربط ملف manifest -->
   <link rel="manifest" href="manifest.json">
-  <!-- ربط الأيقونة -->
   <link rel="icon" href="icon-512.png" type="image/png">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 20px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+  </style>
 </head>
 <body>
   <h1>Welcome to MUDARAKA</h1>
   <p>This is a Progressive Web App.</p>
+  <button onclick="alert('MUDARAKA is working!')">Click Me</button>
 
-  <!-- كود تسجيل الـ Service Worker -->
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js')
