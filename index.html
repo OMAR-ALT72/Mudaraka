@@ -293,6 +293,58 @@ body { overscroll-behavior-y: contain; }
 body.keyboard-open .header { position: relative; }
 body.keyboard-open .modal-box { max-height: 60vh; }
 </style>
+/* ===== Mobile & Multi-Platform Enhancements ===== */
+/* Safe areas for notched devices */
+.header { padding-top: max(20px, env(safe-area-inset-top)); padding-left: max(40px, env(safe-area-inset-left)); padding-right: max(40px, env(safe-area-inset-right)); }
+.main { padding-bottom: max(25px, env(safe-area-inset-bottom)); }
+/* Touch-friendly buttons */
+.btn, .mtab, .page-btn, .act-btn, .response-type-btn, .dir-toggle-btn { min-height: 44px; min-width: 44px; }
+/* Prevent text selection on UI elements */
+.header, .toolbar, .months, .stat, .mtab, .page-btn, .act-btn, .badge, th { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+/* Smooth scrolling */
+body { -webkit-overflow-scrolling: touch; overscroll-behavior-y: none; }
+/* Prevent callout on long press */
+body { -webkit-touch-callout: none; }
+/* Capacitor status bar handling */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .header { padding-top: calc(20px + env(safe-area-inset-top)); }
+}
+/* iOS momentum scrolling */
+.table-wrap, .items-grid, #itemsSelectionContainer, .a4-letter-preview { -webkit-overflow-scrolling: touch; }
+/* Disable pull-to-refresh on mobile */
+body { overscroll-behavior-y: contain; }
+/* Better tap highlight */
+* { -webkit-tap-highlight-color: transparent; }
+/* Responsive modal for small screens */
+@media(max-width:480px){
+  .modal-box { margin: 10px; max-height: 95vh; }
+  .form-grid { grid-template-columns: 1fr !important; gap: 10px; }
+  .items-grid { grid-template-columns: 1fr !important; }
+  .response-type-selector { flex-direction: column; }
+  .response-type-btn { width: 100%; }
+  .stats { grid-template-columns: repeat(2, 1fr) !important; }
+  .search-input { width: 100% !important; }
+  .toolbar { flex-direction: column; align-items: stretch; }
+  .search-box { margin-left: 0; width: 100%; }
+  .filter-box { width: 100%; }
+  .filter-select { flex: 1; }
+  .act-btns { flex-wrap: wrap; }
+  .act-btn { min-width: 36px; min-height: 36px; }
+  .letter-to, .letter-cc, .letter-subject, .letter-reference { font-size: 12pt !important; }
+  .a4-letter-page { padding: 30mm 10mm 10mm 10mm !important; font-size: 12pt !important; }
+}
+/* Tablet adjustments */
+@media(min-width:481px) and (max-width:768px){
+  .form-grid { grid-template-columns: 1fr 1fr !important; }
+  .stats { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* Keyboard open adjustments */
+body.keyboard-open .header { position: relative; }
+body.keyboard-open .modal-box { max-height: 60vh; }
+</style>
+
+<!-- Capacitor Bridge Detection -->
 <script>
 window.isCapacitor = function() { return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()); };
 window.isMobile = function() { return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.isCapacitor(); };
