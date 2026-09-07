@@ -2,10 +2,15 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MUDARAKA">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="msapplication-TileColor" content="#e94560">
+<link rel="manifest" href="manifest.json">
 <title>MUDARAKA - Enhanced</title>
-   <link rel="manifest" href="manifest.json">
-  <script src="sw.js"></script>  
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',Arial,Helvetica,sans-serif;background:#0d1117;min-height:100vh;color:#c9d1d9}
@@ -202,17 +207,101 @@ tr:hover td{color:#fff}
 #itemsModeToggle { transition: all 0.2s ease; white-space: nowrap; }
 #itemsModeToggle.btn-green { background: #00b894; color: white; border-color: #00b894; }
 #itemsModeToggle.btn-green:hover { background: #00a383; border-color: #00a383; }
-</style></style>
-<base target="_blank">
-<base target="_blank">
-<base target="_blank">
-<base target="_blank">
-<base target="_blank">
-<base target="_blank">
-<base target="_blank">
-<base target="_blank">
-<base target="_blank">
-<base target="_blank">
+
+/* ===== Direction Toggle Buttons ===== */
+.dir-toggle-group { display: flex; gap: 4px; }
+.dir-toggle-btn { 
+    padding: 4px 10px; 
+    border: 1px solid #30363d; 
+    border-radius: 4px; 
+    background: #0d1117; 
+    color: #8b949e; 
+    cursor: pointer; 
+    font-size: 11px; 
+    font-weight: 700; 
+    transition: all 0.2s; 
+}
+.dir-toggle-btn:hover { border-color: #e94560; color: #e94560; }
+.dir-toggle-btn.active { background: #e94560; border-color: #e94560; color: white; }
+
+/* ===== Manual Textarea Direction Styles ===== */
+/* ===== Manual Textarea with proper bidirectional support ===== */
+#manualItemsText {
+    unicode-bidi: plaintext;
+    direction: auto;
+}
+#manualItemsText[dir="ltr"] { 
+    text-align: left; 
+    direction: ltr;
+}
+#manualItemsText[dir="rtl"] { 
+    text-align: right; 
+    direction: rtl;
+}
+/* When in auto mode, let browser decide per line */
+#manualItemsText[dir="auto"] {
+    unicode-bidi: plaintext;
+}
+
+/* ===== Mobile & Multi-Platform Enhancements ===== */
+/* Safe areas for notched devices */
+.header { padding-top: max(20px, env(safe-area-inset-top)); padding-left: max(40px, env(safe-area-inset-left)); padding-right: max(40px, env(safe-area-inset-right)); }
+.main { padding-bottom: max(25px, env(safe-area-inset-bottom)); }
+/* Touch-friendly buttons */
+.btn, .mtab, .page-btn, .act-btn, .response-type-btn, .dir-toggle-btn { min-height: 44px; min-width: 44px; }
+/* Prevent text selection on UI elements */
+.header, .toolbar, .months, .stat, .mtab, .page-btn, .act-btn, .badge, th { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+/* Smooth scrolling */
+body { -webkit-overflow-scrolling: touch; overscroll-behavior-y: none; }
+/* Prevent callout on long press */
+body { -webkit-touch-callout: none; }
+/* Capacitor status bar handling */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .header { padding-top: calc(20px + env(safe-area-inset-top)); }
+}
+/* iOS momentum scrolling */
+.table-wrap, .items-grid, #itemsSelectionContainer, .a4-letter-preview { -webkit-overflow-scrolling: touch; }
+/* Disable pull-to-refresh on mobile */
+body { overscroll-behavior-y: contain; }
+/* Better tap highlight */
+* { -webkit-tap-highlight-color: transparent; }
+/* Responsive modal for small screens */
+@media(max-width:480px){
+  .modal-box { margin: 10px; max-height: 95vh; }
+  .form-grid { grid-template-columns: 1fr !important; gap: 10px; }
+  .items-grid { grid-template-columns: 1fr !important; }
+  .response-type-selector { flex-direction: column; }
+  .response-type-btn { width: 100%; }
+  .stats { grid-template-columns: repeat(2, 1fr) !important; }
+  .search-input { width: 100% !important; }
+  .toolbar { flex-direction: column; align-items: stretch; }
+  .search-box { margin-left: 0; width: 100%; }
+  .filter-box { width: 100%; }
+  .filter-select { flex: 1; }
+  .act-btns { flex-wrap: wrap; }
+  .act-btn { min-width: 36px; min-height: 36px; }
+  .letter-to, .letter-cc, .letter-subject, .letter-reference { font-size: 12pt !important; }
+  .a4-letter-page { padding: 30mm 10mm 10mm 10mm !important; font-size: 12pt !important; }
+}
+/* Tablet adjustments */
+@media(min-width:481px) and (max-width:768px){
+  .form-grid { grid-template-columns: 1fr 1fr !important; }
+  .stats { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* Keyboard open adjustments */
+body.keyboard-open .header { position: relative; }
+body.keyboard-open .modal-box { max-height: 60vh; }
+</style>
+<script>
+window.isCapacitor = function() { return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()); };
+window.isMobile = function() { return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.isCapacitor(); };
+// Handle keyboard on mobile
+window.addEventListener('resize', function() {
+    if (window.innerHeight < 500) document.body.classList.add('keyboard-open');
+    else document.body.classList.remove('keyboard-open');
+});
+</script>
 <base target="_blank">
 </head>
 <body>
@@ -258,7 +347,7 @@ tr:hover td{color:#fff}
 <span data-en="Reports" data-ar="تقارير">Reports</span>
 </button>
 <div class="search-box">
-<input type="text" class="search-input" id="searchInput" placeholder="Search by number, company, order, PO..." oninput="searchRecords()">
+<input type="text" class="search-input" id="searchInput" placeholder="Search by number, company, order, PO, item code..." oninput="searchRecords()">
 <div class="filter-box">
 <select class="filter-select" id="typeFilter" onchange="searchRecords()">
 <option value="" data-en="All Types" data-ar="جميع الأنواع">All Types</option>
@@ -510,8 +599,15 @@ tr:hover td{color:#fff}
 <div id="itemsManualSection" style="display:none;margin-top:10px">
 <div class="form-group full">
 <label data-en="Manual Items Text" data-ar="النص اليدوي للبنود">Manual Items Text</label>
-<div style="font-size:11px;color:#888;margin-bottom:5px;" data-en="Tip: Start lines with Arabic for RTL, or press Ctrl+Shift+L to insert LTR item code" data-ar="تلميح: ابدأ السطر بالعربية للكتابة من اليمين، أو اضغط Ctrl+Shift+L لإدراج بند من اليسار">تلميح: ابدأ السطر بالعربية للكتابة من اليمين، أو اضغط Ctrl+Shift+L لإدراج بند من اليسار</div>
-<textarea id="manualItemsText" rows="6" dir="auto" placeholder="Enter items description here..." data-en="Enter items description here..." data-ar="أدخل وصف البنود هنا..." oninput="updateLetterPreview()"></textarea>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;flex-wrap:wrap;gap:8px;">
+<div style="font-size:11px;color:#888;" data-en="Tip: Use toggle below to control text direction, or press Ctrl+Shift+L to insert LTR item code" data-ar="تلميح: استخدم الأزرار أدناه للتحكم في اتجاه النص، أو اضغط Ctrl+Shift+L لإدراج بند من اليسار">تلميح: استخدم الأزرار أدناه للتحكم في اتجاه النص، أو اضغط Ctrl+Shift+L لإدراج بند من اليسار</div>
+<div class="dir-toggle-group" style="display:flex;gap:4px;">
+<button type="button" class="dir-toggle-btn active" id="dirAuto" onclick="setManualDir('auto')" title="Auto-detect direction" data-en="Auto" data-ar="تلقائي">Auto</button>
+<button type="button" class="dir-toggle-btn" id="dirRTL" onclick="setManualDir('rtl')" title="Right-to-Left (Arabic)" data-en="RTL" data-ar="يمين">RTL</button>
+<button type="button" class="dir-toggle-btn" id="dirLTR" onclick="setManualDir('ltr')" title="Left-to-Right (English/Items)" data-en="LTR" data-ar="يسار">LTR</button>
+</div>
+</div>
+<textarea id="manualItemsText" rows="6" dir="auto" placeholder="Enter items description here..." data-en="Enter items description here..." data-ar="أدخل وصف البنود هنا..." oninput="handleManualTextInput(this)" onkeydown="handleManualTextKeydown(event)"></textarea>
 </div>
 </div>
 </div>
@@ -668,6 +764,86 @@ try {
 var currentMonth = new Date().getMonth();
 var currentYear = new Date().getFullYear();
 var editingId = null;
+
+// ===== Global Direction Control (defined early to prevent errors) =====
+window.manualTextDir = window.manualTextDir || 'auto';
+window.setManualDir = window.setManualDir || function(dir) {
+    window.manualTextDir = dir;
+    var textarea = document.getElementById('manualItemsText');
+    if (textarea) {
+        if (dir === 'auto') {
+            var detectedDir = window.detectTextDirection(textarea.value);
+            textarea.setAttribute('dir', detectedDir);
+            textarea.style.textAlign = detectedDir === 'ltr' ? 'left' : 'right';
+            textarea.style.direction = detectedDir;
+            textarea.style.unicodeBidi = 'plaintext';
+        } else {
+            textarea.setAttribute('dir', dir);
+            textarea.style.textAlign = dir === 'ltr' ? 'left' : 'right';
+            textarea.style.direction = dir;
+            textarea.style.unicodeBidi = 'normal';
+        }
+        var btnAuto = document.getElementById('dirAuto');
+        var btnRTL = document.getElementById('dirRTL');
+        var btnLTR = document.getElementById('dirLTR');
+        if (btnAuto) btnAuto.classList.toggle('active', dir === 'auto');
+        if (btnRTL) btnRTL.classList.toggle('active', dir === 'rtl');
+        if (btnLTR) btnLTR.classList.toggle('active', dir === 'ltr');
+    }
+    if (typeof updateLetterPreview === 'function') updateLetterPreview();
+};
+window.detectTextDirection = window.detectTextDirection || function(text) {
+    if (!text || text.length === 0) return 'rtl';
+    for (var i = 0; i < text.length; i++) {
+        var char = text.charCodeAt(i);
+        if ((char >= 0x0600 && char <= 0x06FF) || 
+            (char >= 0x0750 && char <= 0x077F) ||
+            (char >= 0x08A0 && char <= 0x08FF) ||
+            (char >= 0xFB50 && char <= 0xFDFF) ||
+            (char >= 0xFE70 && char <= 0xFEFF)) {
+            return 'rtl';
+        }
+        if ((char >= 0x0041 && char <= 0x005A) || (char >= 0x0061 && char <= 0x007A)) {
+            return 'ltr';
+        }
+    }
+    return 'rtl';
+};
+window.handleManualTextInput = window.handleManualTextInput || function(textarea) {
+    if (window.manualTextDir === 'auto' && textarea) {
+        var detectedDir = window.detectTextDirection(textarea.value);
+        textarea.setAttribute('dir', detectedDir);
+        textarea.style.textAlign = detectedDir === 'ltr' ? 'left' : 'right';
+    }
+    if (typeof updateLetterPreview === 'function') updateLetterPreview();
+};
+window.handleManualTextKeydown = window.handleManualTextKeydown || function(event) {
+    if (event.ctrlKey && event.shiftKey && event.key === 'L') {
+        event.preventDefault();
+        var ta = document.getElementById('manualItemsText');
+        if (ta) {
+            var start = ta.selectionStart;
+            var end = ta.selectionEnd;
+            var val = ta.value;
+            var before = val.substring(0, start);
+            var selected = val.substring(start, end);
+            var after = val.substring(end);
+            if (start === end) selected = '09-N-XXXXX';
+            ta.value = before + '\u202A' + selected + '\u202C' + after;
+            ta.selectionStart = start + 1;
+            ta.selectionEnd = start + 1 + selected.length;
+            window.handleManualTextInput(ta);
+        }
+    }
+};
+window.restoreManualDir = window.restoreManualDir || function(record) {
+    if (record && record.manualTextDir) {
+        window.setManualDir(record.manualTextDir);
+    } else {
+        window.setManualDir('auto');
+    }
+};
+
 var reportVisible = false;
 var selectedFileContent = null;
 var currentLang = 'en';
@@ -711,7 +887,7 @@ var translations = {
         addBtn: '+ Add Offer/Inquiry/Unable to Remedy',
         clearAll: 'Clear All',
         print: 'Print',
-        searchPlaceholder: 'Search by number, company, order, PO...',
+        searchPlaceholder: 'Search by number, company, order, PO, item code...',
         allTypes: 'All Types',
         offer: 'Offer',
         inquiry: 'Inquiry',
@@ -827,7 +1003,7 @@ var translations = {
         addBtn: '+ إضافة عرض/استفسار/تعذر مداركة',
         clearAll: 'مسح الكل',
         print: 'طباعة',
-        searchPlaceholder: 'البحث بالرقم، الشركة، الأمر، PO...',
+        searchPlaceholder: 'البحث بالرقم، الشركة، الأمر، PO، كود البند...',
         allTypes: 'جميع الأنواع',
         offer: 'عرض',
         inquiry: 'استفسار',
@@ -1224,12 +1400,25 @@ function getFilteredRecords() {
         var r = records[i];
         // If currentMonth === -1, show ALL records regardless of month/year
         var matchesMonth = (currentMonth === -1) || (r.month === currentMonth && r.year === currentYear);
+
+        // Check if any item matches the search term
+        var matchesItem = false;
+        if (searchTerm && r.items && r.items.length > 0) {
+            for (var it = 0; it < r.items.length; it++) {
+                if (r.items[it].toLowerCase().indexOf(searchTerm) !== -1) {
+                    matchesItem = true;
+                    break;
+                }
+            }
+        }
+
         var matchesSearch = !searchTerm || 
             r.number.toLowerCase().indexOf(searchTerm) !== -1 || 
             r.company.toLowerCase().indexOf(searchTerm) !== -1 || 
             r.orderNumber.toLowerCase().indexOf(searchTerm) !== -1 || 
             r.poNumber.toLowerCase().indexOf(searchTerm) !== -1 ||
-            r.type.toLowerCase().indexOf(searchTerm) !== -1;
+            r.type.toLowerCase().indexOf(searchTerm) !== -1 ||
+            matchesItem;
         var matchesType = !typeFilter || r.type === typeFilter;
         if (matchesMonth && matchesSearch && matchesType) filtered.push(r);
     }
@@ -1274,9 +1463,61 @@ function sortTable(field) {
     renderTable();
 }
 
+
+function getItemsDisplay(record, searchTerm) {
+    if (!record.items || record.items.length === 0) {
+        return '<span style="color:#666">-</span>';
+    }
+
+    // If no search term, just show count
+    if (!searchTerm) {
+        return record.items.length + ' ' + (currentLang === 'ar' ? 'بنود' : 'items');
+    }
+
+    // When searching, show matching items with highlight
+    var matchingItems = [];
+    var otherItems = [];
+
+    for (var i = 0; i < record.items.length; i++) {
+        if (record.items[i].toLowerCase().indexOf(searchTerm) !== -1) {
+            matchingItems.push(record.items[i]);
+        } else {
+            otherItems.push(record.items[i]);
+        }
+    }
+
+    if (matchingItems.length === 0) {
+        // No direct match in items (matched by other field), show count
+        return record.items.length + ' ' + (currentLang === 'ar' ? 'بنود' : 'items');
+    }
+
+    // Show matching items with highlight
+    var html = '<div style="max-width:200px;max-height:60px;overflow-y:auto;font-size:11px;">';
+    for (var m = 0; m < matchingItems.length; m++) {
+        // Highlight the matching part
+        var itemText = matchingItems[m];
+        var lowerText = itemText.toLowerCase();
+        var termLower = searchTerm.toLowerCase();
+        var startIdx = lowerText.indexOf(termLower);
+        if (startIdx !== -1) {
+            var before = itemText.substring(0, startIdx);
+            var match = itemText.substring(startIdx, startIdx + searchTerm.length);
+            var after = itemText.substring(startIdx + searchTerm.length);
+            itemText = before + '<mark style="background:#e94560;color:#fff;padding:1px 3px;border-radius:2px;">' + match + '</mark>' + after;
+        }
+        html += '<div style="margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;direction:ltr;text-align:left;" dir="ltr">' + itemText + '</div>';
+    }
+    if (otherItems.length > 0) {
+        html += '<div style="color:#666;font-size:10px;margin-top:3px;">+' + otherItems.length + ' ' + (currentLang === 'ar' ? 'بنود أخرى' : 'more') + '</div>';
+    }
+    html += '</div>';
+    return html;
+}
+
 function renderTable() {
     var tbody = document.getElementById('tableBody');
     var emptyState = document.getElementById('emptyState');
+    var searchTerm = document.getElementById('searchInput').value.toLowerCase();
     var filtered = getFilteredRecords();
     filtered = sortRecords(filtered);
 
@@ -1301,7 +1542,7 @@ function renderTable() {
         var badgeClass = record.type === 'offer' ? 'badge-o' : record.type === 'inquiry' ? 'badge-i' : 'badge-u';
         var typeLabel = record.type === 'offer' ? t('offer') : record.type === 'inquiry' ? t('inquiry') : t('unableToRemedy');
         var globalIndex = start + j + 1;
-        html += '<tr data-id="' + record.id + '"><td>' + globalIndex + '</td><td><span class="badge ' + badgeClass + '">' + typeLabel + '</span></td><td>' + record.number + '</td><td>' + formatDate(record.receiptDate) + '</td><td>' + (record.responseDate ? formatDate(record.responseDate) : '<span style="color:#666">-</span>') + '</td><td>' + (record.hasResponse === true ? '<span class="response-checkmark" title="Has Response">✓</span>' : '<span class="response-none" title="No Response">-</span>') + '</td><td>' + record.orderNumber + '</td><td>' + (record.poNumber || '-') + '</td><td>' + record.company + '</td><td>' + record.items.length + ' ' + t('items').toLowerCase() + '</td><td><div class="act-btns"><button class="act-btn btn-view" style="background:#0984e3;color:white" data-id="' + record.id + '" title="View">V</button><button class="act-btn btn-edit" style="background:#00b894;color:white" data-id="' + record.id + '" title="Edit">E</button><button class="act-btn btn-response" style="background:#6c5ce7;color:white" data-id="' + record.id + '" title="Response">R</button><button class="act-btn btn-delete" style="background:#d63031;color:white" data-id="' + record.id + '" title="Delete">D</button></div></td></tr>';
+        html += '<tr data-id="' + record.id + '"><td>' + globalIndex + '</td><td><span class="badge ' + badgeClass + '">' + typeLabel + '</span></td><td>' + record.number + '</td><td>' + formatDate(record.receiptDate) + '</td><td>' + (record.responseDate ? formatDate(record.responseDate) : '<span style="color:#666">-</span>') + '</td><td>' + (record.hasResponse === true ? '<span class="response-checkmark" title="Has Response">✓</span>' : '<span class="response-none" title="No Response">-</span>') + '</td><td>' + record.orderNumber + '</td><td>' + (record.poNumber || '-') + '</td><td>' + record.company + '</td><td>' + record.items.length + ' ' + '</td><td>' + getItemsDisplay(record, searchTerm) + '</td><td><div class="act-btns"><button class="act-btn btn-view" style="background:#0984e3;color:white" data-id="' + record.id + '" title="View">V</button><button class="act-btn btn-edit" style="background:#00b894;color:white" data-id="' + record.id + '" title="Edit">E</button><button class="act-btn btn-response" style="background:#6c5ce7;color:white" data-id="' + record.id + '" title="Response">R</button><button class="act-btn btn-delete" style="background:#d63031;color:white" data-id="' + record.id + '" title="Delete">D</button></div></td></tr>';
     }
     tbody.innerHTML = html;
     renderPagination(totalPages, filtered.length);
@@ -1636,7 +1877,68 @@ function generatePrintHTML(records) {
     var subtitle = monthNames[currentMonth] + ' ' + currentYear;
 
     var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + title + '</title>';
-    html += '<style>body{font-family:Arial,sans-serif;padding:20px;color:#333}h1{color:#e94560;margin-bottom:5px}h2{color:#666;font-size:14px;margin-top:0;font-weight:normal}table{width:100%;border-collapse:collapse;margin-top:20px;font-size:11px}th{background:#f0f0f0;padding:8px;text-align:left;border-bottom:2px solid #333;font-weight:bold}td{padding:8px;border-bottom:1px solid #ddd}.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold}.badge-o{background:#00b89433;color:#00b894;border:1px solid #00b894}.badge-i{background:#0984e333;color:#0984e3;border:1px solid #0984e3}.badge-u{background:#d6303133;color:#d63031;border:1px solid #d63031}.header-info{display:flex;justify-content:space-between;margin-bottom:20px;font-size:12px;color:#666}.footer{margin-top:30px;font-size:10px;color:#999;text-align:center;border-top:1px solid #ddd;padding-top:10px}@media print{.no-print{display:none}.a4-preview-header{display:none!important}}</style></head><body>';
+    html += '<style>body{font-family:Arial,sans-serif;padding:20px;color:#333}h1{color:#e94560;margin-bottom:5px}h2{color:#666;font-size:14px;margin-top:0;font-weight:normal}table{width:100%;border-collapse:collapse;margin-top:20px;font-size:11px}th{background:#f0f0f0;padding:8px;text-align:left;border-bottom:2px solid #333;font-weight:bold}td{padding:8px;border-bottom:1px solid #ddd}.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold}.badge-o{background:#00b89433;color:#00b894;border:1px solid #00b894}.badge-i{background:#0984e333;color:#0984e3;border:1px solid #0984e3}.badge-u{background:#d6303133;color:#d63031;border:1px solid #d63031}.header-info{display:flex;justify-content:space-between;margin-bottom:20px;font-size:12px;color:#666}.footer{margin-top:30px;font-size:10px;color:#999;text-align:center;border-top:1px solid #ddd;padding-top:10px}@media print{.no-print{display:none}.a4-preview-header{display:none!important}}
+/* ===== Mobile & Multi-Platform Enhancements ===== */
+/* Safe areas for notched devices */
+.header { padding-top: max(20px, env(safe-area-inset-top)); padding-left: max(40px, env(safe-area-inset-left)); padding-right: max(40px, env(safe-area-inset-right)); }
+.main { padding-bottom: max(25px, env(safe-area-inset-bottom)); }
+/* Touch-friendly buttons */
+.btn, .mtab, .page-btn, .act-btn, .response-type-btn, .dir-toggle-btn { min-height: 44px; min-width: 44px; }
+/* Prevent text selection on UI elements */
+.header, .toolbar, .months, .stat, .mtab, .page-btn, .act-btn, .badge, th { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+/* Smooth scrolling */
+body { -webkit-overflow-scrolling: touch; overscroll-behavior-y: none; }
+/* Prevent callout on long press */
+body { -webkit-touch-callout: none; }
+/* Capacitor status bar handling */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .header { padding-top: calc(20px + env(safe-area-inset-top)); }
+}
+/* iOS momentum scrolling */
+.table-wrap, .items-grid, #itemsSelectionContainer, .a4-letter-preview { -webkit-overflow-scrolling: touch; }
+/* Disable pull-to-refresh on mobile */
+body { overscroll-behavior-y: contain; }
+/* Better tap highlight */
+* { -webkit-tap-highlight-color: transparent; }
+/* Responsive modal for small screens */
+@media(max-width:480px){
+  .modal-box { margin: 10px; max-height: 95vh; }
+  .form-grid { grid-template-columns: 1fr !important; gap: 10px; }
+  .items-grid { grid-template-columns: 1fr !important; }
+  .response-type-selector { flex-direction: column; }
+  .response-type-btn { width: 100%; }
+  .stats { grid-template-columns: repeat(2, 1fr) !important; }
+  .search-input { width: 100% !important; }
+  .toolbar { flex-direction: column; align-items: stretch; }
+  .search-box { margin-left: 0; width: 100%; }
+  .filter-box { width: 100%; }
+  .filter-select { flex: 1; }
+  .act-btns { flex-wrap: wrap; }
+  .act-btn { min-width: 36px; min-height: 36px; }
+  .letter-to, .letter-cc, .letter-subject, .letter-reference { font-size: 12pt !important; }
+  .a4-letter-page { padding: 30mm 10mm 10mm 10mm !important; font-size: 12pt !important; }
+}
+/* Tablet adjustments */
+@media(min-width:481px) and (max-width:768px){
+  .form-grid { grid-template-columns: 1fr 1fr !important; }
+  .stats { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* Keyboard open adjustments */
+body.keyboard-open .header { position: relative; }
+body.keyboard-open .modal-box { max-height: 60vh; }
+</style>
+<!-- Capacitor Bridge Detection -->
+<script>
+window.isCapacitor = function() { return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()); };
+window.isMobile = function() { return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.isCapacitor(); };
+// Handle keyboard on mobile
+window.addEventListener('resize', function() {
+    if (window.innerHeight < 500) document.body.classList.add('keyboard-open');
+    else document.body.classList.remove('keyboard-open');
+});
+</script>
+</head><body>';
     html += '<h1>' + title + '</h1><h2>' + subtitle + '</h2>';
     html += '<div class="header-info"><div>' + (currentLang === 'ar' ? 'إجمالي السجلات: ' : 'Total Records: ') + records.length + '</div><div>' + new Date().toLocaleDateString() + '</div></div>';
     html += '<table><thead><tr>';
@@ -1669,7 +1971,18 @@ function generatePrintHTML(records) {
     }
     html += '</tbody></table>';
     html += '<div class="footer">MUDARAKA - ' + (currentLang === 'ar' ? 'نظام إدارة العروض والاستفسارات' : 'Offer & Inquiry Management') + '</div>';
-    html += '</body></html>';
+    html += '
+<!-- Service Worker for PWA Offline Support -->
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('data:text/javascript;base64,' + btoa(`
+    self.addEventListener('install', e => { self.skipWaiting(); });
+    self.addEventListener('activate', e => { e.waitUntil(self.clients.claim()); });
+    self.addEventListener('fetch', e => { e.respondWith(fetch(e.request).catch(() => caches.match(e.request))); });
+  `)).then(reg => console.log('SW registered')).catch(err => console.log('SW failed:', err));
+}
+</script>
+</body></html>';
     return html;
 }
 
@@ -1860,11 +2173,43 @@ function updateItemDropdown() {
 // ============ END SMART DROPDOWN FUNCTIONS ============
 
 function saveToStorage() {
-    try { localStorage.setItem('mudaraka_records', JSON.stringify(records)); } catch(e) { console.warn('LocalStorage not available'); }
+    try { 
+        var data = { records: records, exportDate: new Date().toISOString() }; 
+        var jsonStr = JSON.stringify(data);
+        localStorage.setItem('MUDARAKA_records', jsonStr);
+        // Capacitor Preferences fallback
+        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Preferences) {
+            window.Capacitor.Plugins.Preferences.set({ key: 'MUDARAKA_records', value: jsonStr });
+        }
+    } catch(e) { console.warn('Storage save failed:', e); }
 }
 
 function loadFromStorage() {
-    try { var stored = localStorage.getItem('mudaraka_records'); if (stored) records = JSON.parse(stored); } catch(e) { console.warn('LocalStorage not available'); }
+    var loaded = false;
+    try { 
+        var stored = localStorage.getItem('MUDARAKA_records'); 
+        if (stored) { 
+            var parsed = JSON.parse(stored); 
+            if (parsed && parsed.records && Array.isArray(parsed.records)) { records = parsed.records; loaded = true; }
+            else if (Array.isArray(parsed)) { records = parsed; loaded = true; }
+        } 
+    } catch(e) { console.warn('LocalStorage load failed:', e); }
+
+    // Capacitor Preferences fallback (async, but we try sync first)
+    if (!loaded && window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Preferences) {
+        window.Capacitor.Plugins.Preferences.get({ key: 'MUDARAKA_records' }).then(function(result) {
+            if (result.value) {
+                try {
+                    var parsed = JSON.parse(result.value);
+                    if (parsed && parsed.records && Array.isArray(parsed.records)) {
+                        records = parsed.records;
+                        renderTable(); updateStats(); generateMonthTabs(); updateSmartDropdowns();
+                    }
+                } catch(e) { console.warn('Capacitor load failed:', e); }
+            }
+        }).catch(function(e) { console.warn('Capacitor Preferences error:', e); });
+    }
+
     updateSmartDropdowns();
 }
 
@@ -1891,7 +2236,117 @@ var currentResponseRecord = null;
 var companyRows = [];
 var selectedItems = [];
 
+// ===== Manual Text Direction Control =====
+var manualTextDir = 'auto'; // 'auto', 'rtl', or 'ltr'
+
+function setManualDir(dir) {
+    manualTextDir = dir;
+    var textarea = document.getElementById('manualItemsText');
+    if (textarea) {
+        if (dir === 'auto') {
+            // Auto mode: detect direction from current text
+            var detectedDir = detectTextDirection(textarea.value);
+            textarea.setAttribute('dir', detectedDir);
+            textarea.style.textAlign = detectedDir === 'ltr' ? 'left' : 'right';
+            textarea.style.direction = detectedDir;
+            textarea.style.unicodeBidi = 'plaintext';
+        } else {
+            // Manual mode: force direction
+            textarea.setAttribute('dir', dir);
+            textarea.style.textAlign = dir === 'ltr' ? 'left' : 'right';
+            textarea.style.direction = dir;
+            textarea.style.unicodeBidi = 'normal';
+        }
+        var btnAuto = document.getElementById('dirAuto');
+        var btnRTL = document.getElementById('dirRTL');
+        var btnLTR = document.getElementById('dirLTR');
+        if (btnAuto) btnAuto.classList.toggle('active', dir === 'auto');
+        if (btnRTL) btnRTL.classList.toggle('active', dir === 'rtl');
+        if (btnLTR) btnLTR.classList.toggle('active', dir === 'ltr');
+    }
+    updateLetterPreview();
+}
+
+function detectTextDirection(text) {
+    if (!text || text.length === 0) return 'rtl';
+    for (var i = 0; i < text.length; i++) {
+        var char = text.charCodeAt(i);
+        if ((char >= 0x0600 && char <= 0x06FF) || 
+            (char >= 0x0750 && char <= 0x077F) ||
+            (char >= 0x08A0 && char <= 0x08FF) ||
+            (char >= 0xFB50 && char <= 0xFDFF) ||
+            (char >= 0xFE70 && char <= 0xFEFF)) {
+            return 'rtl';
+        }
+        if ((char >= 0x0041 && char <= 0x005A) || (char >= 0x0061 && char <= 0x007A)) {
+            return 'ltr';
+        }
+    }
+    return 'rtl';
+}
+
+function handleManualTextInput(textarea) {
+    if (!textarea) return;
+
+    if (manualTextDir === 'auto') {
+        // In auto mode: detect direction from text content
+        var detectedDir = detectTextDirection(textarea.value);
+        textarea.setAttribute('dir', detectedDir);
+        textarea.style.textAlign = detectedDir === 'ltr' ? 'left' : 'right';
+        textarea.style.direction = detectedDir;
+        textarea.style.unicodeBidi = 'plaintext';
+    } else {
+        // In manual mode: force the chosen direction for entire textarea
+        textarea.setAttribute('dir', manualTextDir);
+        textarea.style.textAlign = manualTextDir === 'ltr' ? 'left' : 'right';
+        textarea.style.direction = manualTextDir;
+        textarea.style.unicodeBidi = 'normal';
+    }
+    updateLetterPreview();
+}
+
+function handleManualTextKeydown(event) {
+    if (event.ctrlKey && event.shiftKey && event.key === 'L') {
+        event.preventDefault();
+        var ta = document.getElementById('manualItemsText');
+        if (ta) {
+            var start = ta.selectionStart;
+            var end = ta.selectionEnd;
+            var val = ta.value;
+            var before = val.substring(0, start);
+            var selected = val.substring(start, end);
+            var after = val.substring(end);
+            if (start === end) {
+                selected = '09-N-XXXXX';
+            }
+            ta.value = before + '\u202A' + selected + '\u202C' + after;
+            ta.selectionStart = start + 1;
+            ta.selectionEnd = start + 1 + selected.length;
+            handleManualTextInput(ta);
+        }
+    }
+}
+
+function restoreManualDir(record) {
+    if (record && record.manualTextDir) {
+        setManualDir(record.manualTextDir);
+    } else {
+        setManualDir('auto');
+    }
+}
+
 function openResponseModal(recordId) {
+    // Defensive: ensure direction functions exist
+    if (typeof setManualDir !== 'function') {
+        window.setManualDir = function(dir) { manualTextDir = dir; };
+    }
+    if (typeof restoreManualDir !== 'function') {
+        window.restoreManualDir = function(record) {};
+    }
+    if (typeof detectTextDirection !== 'function') {
+        window.detectTextDirection = function(text) { return 'rtl'; };
+    }
+
     var record = null;
     for (var i = 0; i < records.length; i++) {
         if (records[i].id == recordId) { record = records[i]; break; }
@@ -1989,6 +2444,9 @@ function openResponseModal(recordId) {
     if (manualTextArea) {
         manualTextArea.value = record.manualItemsText || '';
     }
+
+    // Restore manual text direction preference
+    restoreManualDir(record);
 
     if (itemsManualMode) {
         // Manual mode: show manual section, hide auto sections
@@ -2915,30 +3373,36 @@ function generateLetterHTML() {
     // Body - preserve line breaks for manual mode
     var formattedBody = bodyText;
     if (itemsManualMode) {
-        // For manual mode: the body contains user's Arabic response text (manualLines)
-        // Arabic text is RTL, but item codes (like 09-N-47001, ST\240972\CP) should be LTR
+        // For manual mode: the body contains user's response text (manualLines)
+        // Respect the manual text direction setting (rtl/ltr/auto)
+        var bodyDir = manualTextDir === 'auto' ? detectTextDirection(bodyText) : manualTextDir;
+        var bodyAlign = bodyDir === 'ltr' ? 'left' : 'right';
+
         formattedBody = manualLines.map(function(line) {
             if (!line.trim()) return '';
-            // Detect item codes in the line and wrap them in LTR spans
-            // Item codes contain: numbers, letters, dashes, backslashes
             var processedLine = escapeHtml(line);
-            // Wrap item codes (patterns like 09-N-47001, W-201254, ST\240972\CP) in LTR spans
-            processedLine = processedLine.replace(
-                /([A-Z0-9]+[-\\][A-Z0-9]+(?:[-\\][A-Z0-9]+)*)/g,
-                '<span dir="ltr" style="direction:ltr;unicode-bidi:embed;display:inline-block;">$1</span>'
-            );
-            // Also wrap standalone item codes at start of line or after colons
-            processedLine = processedLine.replace(
-                /([A-Z0-9]{2,}(?:[-_][A-Z0-9]+)*)/g,
-                function(match) {
-                    // Only wrap if it looks like an item code (contains numbers and uppercase)
-                    if (/[0-9]/.test(match) && /[A-Z]/.test(match)) {
-                        return '<span dir="ltr" style="direction:ltr;unicode-bidi:embed;display:inline-block;">' + match + '</span>';
+
+            // Detect the direction of this specific line for proper item code wrapping
+            var lineDir = detectTextDirection(line);
+
+            if (lineDir === 'rtl') {
+                // For RTL lines (Arabic): wrap item codes in LTR spans
+                processedLine = processedLine.replace(
+                    /([A-Z0-9]+[-\\][A-Z0-9]+(?:[-\\][A-Z0-9]+)*)/g,
+                    '<span dir="ltr" style="direction:ltr;unicode-bidi:embed;display:inline-block;">$1</span>'
+                );
+                processedLine = processedLine.replace(
+                    /([A-Z0-9]{2,}(?:[-_][A-Z0-9]+)*)/g,
+                    function(match) {
+                        if (/[0-9]/.test(match) && /[A-Z]/.test(match)) {
+                            return '<span dir="ltr" style="direction:ltr;unicode-bidi:embed;display:inline-block;">' + match + '</span>';
+                        }
+                        return match;
                     }
-                    return match;
-                }
-            );
-            return '<div dir="rtl" style="text-align:right;margin-bottom:4px;">' + processedLine + '</div>';
+                );
+            }
+
+            return '<div dir="' + bodyDir + '" style="text-align:' + bodyAlign + ';margin-bottom:4px;">' + processedLine + '</div>';
         }).join('');
     } else {
         // For auto mode: original behavior
@@ -3012,7 +3476,79 @@ function printA4Letter() {
     printDoc += '.letter-attachments { margin-top: 15px; font-size: 12pt; }';
     printDoc += '.letter-copies { margin-top: 15px; font-size: 11pt; color: #555; }';
     printDoc += '.letter-copies-title { font-weight: bold; margin-bottom: 5px; }';
-    printDoc += '</style></head><body><div class="letter-container">' + html + '</div></body></html>';
+    printDoc += '
+/* ===== Mobile & Multi-Platform Enhancements ===== */
+/* Safe areas for notched devices */
+.header { padding-top: max(20px, env(safe-area-inset-top)); padding-left: max(40px, env(safe-area-inset-left)); padding-right: max(40px, env(safe-area-inset-right)); }
+.main { padding-bottom: max(25px, env(safe-area-inset-bottom)); }
+/* Touch-friendly buttons */
+.btn, .mtab, .page-btn, .act-btn, .response-type-btn, .dir-toggle-btn { min-height: 44px; min-width: 44px; }
+/* Prevent text selection on UI elements */
+.header, .toolbar, .months, .stat, .mtab, .page-btn, .act-btn, .badge, th { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+/* Smooth scrolling */
+body { -webkit-overflow-scrolling: touch; overscroll-behavior-y: none; }
+/* Prevent callout on long press */
+body { -webkit-touch-callout: none; }
+/* Capacitor status bar handling */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .header { padding-top: calc(20px + env(safe-area-inset-top)); }
+}
+/* iOS momentum scrolling */
+.table-wrap, .items-grid, #itemsSelectionContainer, .a4-letter-preview { -webkit-overflow-scrolling: touch; }
+/* Disable pull-to-refresh on mobile */
+body { overscroll-behavior-y: contain; }
+/* Better tap highlight */
+* { -webkit-tap-highlight-color: transparent; }
+/* Responsive modal for small screens */
+@media(max-width:480px){
+  .modal-box { margin: 10px; max-height: 95vh; }
+  .form-grid { grid-template-columns: 1fr !important; gap: 10px; }
+  .items-grid { grid-template-columns: 1fr !important; }
+  .response-type-selector { flex-direction: column; }
+  .response-type-btn { width: 100%; }
+  .stats { grid-template-columns: repeat(2, 1fr) !important; }
+  .search-input { width: 100% !important; }
+  .toolbar { flex-direction: column; align-items: stretch; }
+  .search-box { margin-left: 0; width: 100%; }
+  .filter-box { width: 100%; }
+  .filter-select { flex: 1; }
+  .act-btns { flex-wrap: wrap; }
+  .act-btn { min-width: 36px; min-height: 36px; }
+  .letter-to, .letter-cc, .letter-subject, .letter-reference { font-size: 12pt !important; }
+  .a4-letter-page { padding: 30mm 10mm 10mm 10mm !important; font-size: 12pt !important; }
+}
+/* Tablet adjustments */
+@media(min-width:481px) and (max-width:768px){
+  .form-grid { grid-template-columns: 1fr 1fr !important; }
+  .stats { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* Keyboard open adjustments */
+body.keyboard-open .header { position: relative; }
+body.keyboard-open .modal-box { max-height: 60vh; }
+</style>
+<!-- Capacitor Bridge Detection -->
+<script>
+window.isCapacitor = function() { return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()); };
+window.isMobile = function() { return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.isCapacitor(); };
+// Handle keyboard on mobile
+window.addEventListener('resize', function() {
+    if (window.innerHeight < 500) document.body.classList.add('keyboard-open');
+    else document.body.classList.remove('keyboard-open');
+});
+</script>
+</head><body><div class="letter-container">' + html + '</div>
+<!-- Service Worker for PWA Offline Support -->
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('data:text/javascript;base64,' + btoa(`
+    self.addEventListener('install', e => { self.skipWaiting(); });
+    self.addEventListener('activate', e => { e.waitUntil(self.clients.claim()); });
+    self.addEventListener('fetch', e => { e.respondWith(fetch(e.request).catch(() => caches.match(e.request))); });
+  `)).then(reg => console.log('SW registered')).catch(err => console.log('SW failed:', err));
+}
+</script>
+</body></html>';
     printWindow.document.write(printDoc);
     printWindow.document.close();
     printWindow.focus();
@@ -3092,7 +3628,68 @@ function saveAsWord() {
     wordHtml += '.letter-attachments { margin-top: 15px; font-size: 12pt; }';
     wordHtml += '.letter-copies { margin-top: 15px; font-size: 11pt; color: #555; }';
     wordHtml += '.letter-copies-title { font-weight: bold; margin-bottom: 5px; }';
-    wordHtml += '</style></head><body><div class="letter-container">';
+    wordHtml += '
+/* ===== Mobile & Multi-Platform Enhancements ===== */
+/* Safe areas for notched devices */
+.header { padding-top: max(20px, env(safe-area-inset-top)); padding-left: max(40px, env(safe-area-inset-left)); padding-right: max(40px, env(safe-area-inset-right)); }
+.main { padding-bottom: max(25px, env(safe-area-inset-bottom)); }
+/* Touch-friendly buttons */
+.btn, .mtab, .page-btn, .act-btn, .response-type-btn, .dir-toggle-btn { min-height: 44px; min-width: 44px; }
+/* Prevent text selection on UI elements */
+.header, .toolbar, .months, .stat, .mtab, .page-btn, .act-btn, .badge, th { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+/* Smooth scrolling */
+body { -webkit-overflow-scrolling: touch; overscroll-behavior-y: none; }
+/* Prevent callout on long press */
+body { -webkit-touch-callout: none; }
+/* Capacitor status bar handling */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .header { padding-top: calc(20px + env(safe-area-inset-top)); }
+}
+/* iOS momentum scrolling */
+.table-wrap, .items-grid, #itemsSelectionContainer, .a4-letter-preview { -webkit-overflow-scrolling: touch; }
+/* Disable pull-to-refresh on mobile */
+body { overscroll-behavior-y: contain; }
+/* Better tap highlight */
+* { -webkit-tap-highlight-color: transparent; }
+/* Responsive modal for small screens */
+@media(max-width:480px){
+  .modal-box { margin: 10px; max-height: 95vh; }
+  .form-grid { grid-template-columns: 1fr !important; gap: 10px; }
+  .items-grid { grid-template-columns: 1fr !important; }
+  .response-type-selector { flex-direction: column; }
+  .response-type-btn { width: 100%; }
+  .stats { grid-template-columns: repeat(2, 1fr) !important; }
+  .search-input { width: 100% !important; }
+  .toolbar { flex-direction: column; align-items: stretch; }
+  .search-box { margin-left: 0; width: 100%; }
+  .filter-box { width: 100%; }
+  .filter-select { flex: 1; }
+  .act-btns { flex-wrap: wrap; }
+  .act-btn { min-width: 36px; min-height: 36px; }
+  .letter-to, .letter-cc, .letter-subject, .letter-reference { font-size: 12pt !important; }
+  .a4-letter-page { padding: 30mm 10mm 10mm 10mm !important; font-size: 12pt !important; }
+}
+/* Tablet adjustments */
+@media(min-width:481px) and (max-width:768px){
+  .form-grid { grid-template-columns: 1fr 1fr !important; }
+  .stats { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* Keyboard open adjustments */
+body.keyboard-open .header { position: relative; }
+body.keyboard-open .modal-box { max-height: 60vh; }
+</style>
+<!-- Capacitor Bridge Detection -->
+<script>
+window.isCapacitor = function() { return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()); };
+window.isMobile = function() { return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.isCapacitor(); };
+// Handle keyboard on mobile
+window.addEventListener('resize', function() {
+    if (window.innerHeight < 500) document.body.classList.add('keyboard-open');
+    else document.body.classList.remove('keyboard-open');
+});
+</script>
+</head><body><div class="letter-container">';
 
     // Recipients
     wordHtml += '<div class="letter-to">السيد / رئيس قسم التخطيط والمراقبة</div>';
@@ -3123,26 +3720,34 @@ function saveAsWord() {
 
     // Body
     if (itemsManualMode) {
-        // For manual mode: body is Arabic response text (manualLines)
-        // Arabic text is RTL, but item codes should be LTR
+        // For manual mode: body is response text (manualLines)
+        // Respect the manual text direction setting
+        var wordBodyDir = manualTextDir === 'auto' ? detectTextDirection(bodyText) : manualTextDir;
+        var wordBodyAlign = wordBodyDir === 'ltr' ? 'left' : 'right';
+
         for (var bl = 0; bl < manualLines.length; bl++) {
             if (manualLines[bl].trim()) {
                 var processedLine = manualLines[bl];
-                // Wrap item codes in LTR spans
-                processedLine = processedLine.replace(
-                    /([A-Z0-9]+[-\\][A-Z0-9]+(?:[-\\][A-Z0-9]+)*)/g,
-                    '<span dir="ltr" style="direction:ltr;unicode-bidi:embed;display:inline-block;">$1</span>'
-                );
-                processedLine = processedLine.replace(
-                    /([A-Z0-9]{2,}(?:[-_][A-Z0-9]+)*)/g,
-                    function(match) {
-                        if (/[0-9]/.test(match) && /[A-Z]/.test(match)) {
-                            return '<span dir="ltr" style="direction:ltr;unicode-bidi:embed;display:inline-block;">' + match + '</span>';
+                var lineDir = detectTextDirection(manualLines[bl]);
+
+                if (lineDir === 'rtl') {
+                    // Wrap item codes in LTR spans for RTL lines
+                    processedLine = processedLine.replace(
+                        /([A-Z0-9]+[-\\][A-Z0-9]+(?:[-\\][A-Z0-9]+)*)/g,
+                        '<span dir="ltr" style="direction:ltr;unicode-bidi:embed;display:inline-block;">$1</span>'
+                    );
+                    processedLine = processedLine.replace(
+                        /([A-Z0-9]{2,}(?:[-_][A-Z0-9]+)*)/g,
+                        function(match) {
+                            if (/[0-9]/.test(match) && /[A-Z]/.test(match)) {
+                                return '<span dir="ltr" style="direction:ltr;unicode-bidi:embed;display:inline-block;">' + match + '</span>';
+                            }
+                            return match;
                         }
-                        return match;
-                    }
-                );
-                wordHtml += '<div class="letter-body" dir="rtl" style="text-align:right;">' + processedLine + '</div>';
+                    );
+                }
+
+                wordHtml += '<div class="letter-body" dir="' + wordBodyDir + '" style="text-align:' + wordBodyAlign + ';">' + processedLine + '</div>';
             }
         }
     } else {
@@ -3182,7 +3787,18 @@ function saveAsWord() {
     wordHtml += '<div style="margin-top:15px;font-weight:bold;font-size:11pt;">ملف الصادر بمكتب التخطيط</div>';
     wordHtml += '<div style="font-size:11pt;">ع ، ' + preparerInitial + '</div>';
 
-    wordHtml += '</div></body></html>';
+    wordHtml += '</div>
+<!-- Service Worker for PWA Offline Support -->
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('data:text/javascript;base64,' + btoa(`
+    self.addEventListener('install', e => { self.skipWaiting(); });
+    self.addEventListener('activate', e => { e.waitUntil(self.clients.claim()); });
+    self.addEventListener('fetch', e => { e.respondWith(fetch(e.request).catch(() => caches.match(e.request))); });
+  `)).then(reg => console.log('SW registered')).catch(err => console.log('SW failed:', err));
+}
+</script>
+</body></html>';
 
     // Create blob and download
     var blob = new Blob(['', wordHtml], { type: 'application/msword' });
@@ -3319,6 +3935,9 @@ function saveResponseToRecord() {
         records[recordIndex].manualItemsText = '';
     }
 
+    // Save manual text direction preference
+    records[recordIndex].manualTextDir = manualTextDir;
+
     // Update the record with ALL response data
     records[recordIndex].responseBody = responseBodyText;
     records[recordIndex].responseDate = responseDate;
@@ -3385,7 +4004,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
 <datalist id="itemList"></datalist>
+
+<!-- Service Worker for PWA Offline Support -->
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('data:text/javascript;base64,' + btoa(`
+    self.addEventListener('install', e => { self.skipWaiting(); });
+    self.addEventListener('activate', e => { e.waitUntil(self.clients.claim()); });
+    self.addEventListener('fetch', e => { e.respondWith(fetch(e.request).catch(() => caches.match(e.request))); });
+  `)).then(reg => console.log('SW registered')).catch(err => console.log('SW failed:', err));
+}
+</script>
 </body>
 </html>
-‏‏mudaraka_fixed.html
-Displaying ‏‏mudaraka_fixed.html.
