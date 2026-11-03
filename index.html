@@ -249,6 +249,7 @@ tr:hover td{color:#fff}
 <base target="_blank">
 <base target="_blank">
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
 <div class="header">
@@ -512,7 +513,7 @@ tr:hover td{color:#fff}
 <div class="form-grid">
 <div class="form-group"><label data-en="Response Number" data-ar="رقم الرد">Response Number</label><input type="text" id="responseNumber" oninput="updateLetterPreview()"></div>
 <div class="form-group"><label data-en="Response Date" data-ar="تاريخ الرد">Response Date</label><input type="date" id="responseDateInput" oninput="updateLetterPreview()"></div>
-<div class="form-group"><label data-en="Responsible Employee" data-ar="الموظف المسؤول">Responsible Employee</label><input type="text" id="responseEmployee" value="autocomplete="off" oninput="updateLetterPreview()"></div>
+<div class="form-group"><label data-en="Responsible Employee" data-ar="الموظف المسؤول">Responsible Employee</label><input type="text" id="responseEmployee" list="employeeList" placeholder="Select or type employee name..." data-en="Select or type employee name..." data-ar="اختر أو اكتب اسم الموظف..." oninput="updateLetterPreview()"></div>
 <div class="form-group"><label data-en="Order Number (ST\)" data-ar="رقم الأمر (ST\)">Order Number (ST\)</label><div class="pre"><span>ST\</span><input type="text" id="responseOrderNumber" oninput="updateLetterPreview()"></div></div>
 </div>
 
@@ -2205,7 +2206,22 @@ function openResponseModal(recordId) {
     document.getElementById('responseNumber').value = record.responseNumber || record.number;
     document.getElementById('responseDateInput').value = record.responseDate || new Date().toISOString().split('T')[0];
     document.getElementById('responseOrderNumber').value = record.responseOrderNumber || record.orderNumber.replace(PREFIX_ST, '');
-    document.getElementById('responseEmployee').value = record.responseEmployee || 'عمر أحمد معيتيق';
+    document.getElementById('responseEmployee').value = record.responseEmployee || '';
+    (function() {
+        var empList = document.getElementById('employeeList');
+        var savedEmp = record.responseEmployee || '';
+        if (savedEmp && empList) {
+            var exists = false;
+            for (var eo = 0; eo < empList.options.length; eo++) {
+                if (empList.options[eo].value === savedEmp) { exists = true; break; }
+            }
+            if (!exists) {
+                var newOpt = document.createElement('option');
+                newOpt.value = savedEmp;
+                empList.appendChild(newOpt);
+            }
+        }
+    })();
     document.getElementById('responseAttachments').value = record.responseAttachments || '';
     document.getElementById('letterFontSize').value = record.letterFontSize || '14';
     document.getElementById('techSpecNumber').value = record.techSpecNumber || '';
@@ -3702,5 +3718,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
 <datalist id="itemList"></datalist>
+<datalist id="employeeList">
+<option value="Omar Ahmed Maeteeq">
+<option value="Employee 2">
+<option value="Employee 3">
+</datalist>
 </body>
 </html>
