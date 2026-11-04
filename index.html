@@ -513,7 +513,11 @@ tr:hover td{color:#fff}
 <div class="form-grid">
 <div class="form-group"><label data-en="Response Number" data-ar="رقم الرد">Response Number</label><input type="text" id="responseNumber" oninput="updateLetterPreview()"></div>
 <div class="form-group"><label data-en="Response Date" data-ar="تاريخ الرد">Response Date</label><input type="date" id="responseDateInput" oninput="updateLetterPreview()"></div>
-<div class="form-group"><label data-en="Responsible Employee" data-ar="الموظف المسؤول">Responsible Employee</label><input type="text" id="responseEmployee" list="employeeList" placeholder="Select or type employee name..." data-en="Select or type employee name..." data-ar="اختر أو اكتب اسم الموظف..." oninput="updateLetterPreview()"></div>
+<div class="form-group"><label data-en="Responsible Employee" data-ar="الموظف المسؤول">Responsible Employee</label>
+<div style="display:flex;gap:6px;align-items:center">
+<input type="text" id="responseEmployee" list="employeeList" placeholder="Select or type employee name..." data-en="Select or type employee name..." data-ar="اختر أو اكتب اسم الموظف..." oninput="updateLetterPreview()" style="flex:1">
+<button type="button" class="btn btn-red" onclick="openEmployeeManager()" title="Manage employee names" data-en="Manage" data-ar="إدارة" style="padding:8px 10px;font-size:11px;white-space:nowrap">⚙ Manage</button>
+</div></div>
 <div class="form-group"><label data-en="Order Number (ST\)" data-ar="رقم الأمر (ST\)">Order Number (ST\)</label><div class="pre"><span>ST\</span><input type="text" id="responseOrderNumber" oninput="updateLetterPreview()"></div></div>
 </div>
 
@@ -680,6 +684,32 @@ tr:hover td{color:#fff}
 </div>
 </div>
 
+<!-- Employee Manager Modal -->
+<div class="modal" id="employeeManagerModal">
+<div class="modal-box" style="max-width:500px">
+<div class="modal-head">
+<h2 data-en="Manage Employee Names" data-ar="إدارة أسماء الموظفين">Manage Employee Names</h2>
+<button class="modal-close" onclick="closeEmployeeManager()">&times;</button>
+</div>
+<div class="modal-body">
+<div id="employeeManagerList" style="max-height:300px;overflow-y:auto"></div>
+<div id="employeeManagerEmpty" style="text-align:center;color:#666;padding:20px;display:none" data-en="No employee names saved yet." data-ar="لا توجد أسماء موظفين محفوظة بعد.">No employee names saved yet.</div>
+<div style="margin-top:15px;padding-top:12px;border-top:1px solid #30363d">
+<div class="form-group full">
+<label data-en="Add New Name" data-ar="إضافة اسم جديد">Add New Name</label>
+<div style="display:flex;gap:6px">
+<input type="text" id="newEmployeeName" placeholder="Type new employee name..." data-en="Type new employee name..." data-ar="اكتب اسم الموظف الجديد..." onkeydown="if(event.key==='Enter'){event.preventDefault();addEmployeeFromManager();}">
+<button type="button" class="btn btn-green" onclick="addEmployeeFromManager()" data-en="Add" data-ar="إضافة" style="white-space:nowrap">+ Add</button>
+</div>
+</div>
+</div>
+</div>
+<div class="modal-foot">
+<button class="btn btn-gray" onclick="closeEmployeeManager()" data-en="Close" data-ar="إغلاق">Close</button>
+</div>
+</div>
+</div>
+
 <!-- A4 Preview Modal -->
 <div class="modal" id="a4PreviewModal">
 <div class="modal-box" style="max-width:950px">
@@ -694,6 +724,117 @@ tr:hover td{color:#fff}
 
 <script>
 var records = [];
+
+// ===== Persistent employees list (shared dropdown) =====
+var EMPLOYEES_KEY = 'MUDARAKA_employees';
+var employees = [];
+try {
+    var savedEmployees = localStorage.getItem(EMPLOYEES_KEY);
+    if (savedEmployees) {
+        var parsedEmployees = JSON.parse(savedEmployees);
+        if (Array.isArray(parsedEmployees)) employees = parsedEmployees;
+    }
+} catch (e) { console.warn('Could not load employees list:', e); }
+function saveEmployees() {
+    try { localStorage.setItem(EMPLOYEES_KEY, JSON.stringify(employees)); } catch (e) { console.warn('Could not save employees list:', e); }
+}
+function addEmployee(name) {
+    name = (name || '').trim();
+    if (!name) return;
+    for (var i = 0; i < employees.length; i++) {
+        if (employees[i] === name) return;
+    }
+    employees.push(name);
+    saveEmployees();
+    updateEmployeeDropdown();
+}
+function updateEmployeeDropdown() {
+    var datalist = document.getElementById('employeeList');
+    if (!datalist) return;
+    datalist.innerHTML = '';
+    for (var i = 0; i < employees.length; i++) {
+        var opt = document.createElement('option');
+        opt.value = employees[i];
+        datalist.appendChild(opt);
+    }
+}
+
+// ===== Employee Manager (add / delete names) =====
+function openEmployeeManager() {
+    renderEmployeeManager();
+    document.getElementById('employeeManagerModal').classList.add('show');
+}
+
+function closeEmployeeManager() {
+    document.getElementById('employeeManagerModal').classList.remove('show');
+}
+
+function renderEmployeeManager() {
+    var container = document.getElementById('employeeManagerList');
+    var emptyMsg = document.getElementById('employeeManagerEmpty');
+    if (!container) return;
+    container.innerHTML = '';
+    emptyMsg.style.display = employees.length === 0 ? 'block' : 'none';
+    for (var i = 0; i < employees.length; i++) {
+        (function(name) {
+            var row = document.createElement('div');
+            row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-bottom:1px solid #30363d;gap:8px';
+            var nameSpan = document.createElement('span');
+            nameSpan.textContent = name;
+            nameSpan.style.cssText = 'color:#c9d1d9;font-size:13px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr;text-align:left';
+            var delBtn = document.createElement('button');
+            delBtn.type = 'button';
+            delBtn.className = 'btn btn-red';
+            delBtn.style.cssText = 'padding:4px 10px;font-size:11px;flex-shrink:0';
+            delBtn.textContent = '×';
+            delBtn.title = (currentLang === 'ar' ? 'حذف' : 'Delete') + ' ' + name;
+            delBtn.onclick = function() { deleteEmployee(name); };
+            row.appendChild(nameSpan);
+            row.appendChild(delBtn);
+            container.appendChild(row);
+        })(employees[i]);
+    }
+}
+
+function deleteEmployee(name) {
+    var msg = currentLang === 'ar'
+        ? 'هل أنت متأكد من حذف الاسم "' + name + '" من القائمة؟'
+        : 'Delete "' + name + '" from the list?';
+    if (!confirm(msg)) return;
+    var idx = employees.indexOf(name);
+    if (idx !== -1) employees.splice(idx, 1);
+    saveEmployees();
+    updateEmployeeDropdown();
+    renderEmployeeManager();
+    // Clear the field if it currently shows the deleted name
+    var empInput = document.getElementById('responseEmployee');
+    if (empInput && empInput.value.trim() === name) empInput.value = '';
+    showToast((currentLang === 'ar' ? 'تم الحذف: ' : 'Deleted: ') + name, 'success');
+}
+
+function addEmployeeFromManager() {
+    var input = document.getElementById('newEmployeeName');
+    if (!input) return;
+    var name = input.value.trim();
+    if (!name) {
+        showToast(currentLang === 'ar' ? 'اكتب الاسم أولاً' : 'Type a name first', 'error');
+        return;
+    }
+    if (employees.indexOf(name) !== -1) {
+        showToast(currentLang === 'ar' ? 'الاسم موجود مسبقاً' : 'Name already exists', 'error');
+        return;
+    }
+    addEmployee(name);
+    input.value = '';
+    renderEmployeeManager();
+    showToast((currentLang === 'ar' ? 'تمت الإضافة: ' : 'Added: ') + name, 'success');
+}
+// Seed default names on first run
+if (employees.length === 0) {
+    employees = ['Omar Ahmed Maeteeq', 'Employee 2', 'Employee 3'];
+    saveEmployees();
+}
+// ===== End employees list =====
 
 // Load records from localStorage on startup
 try {
@@ -1048,6 +1189,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupDragDrop();
     updateLanguage();
     setupTableActions();
+    updateEmployeeDropdown();
 });
 
 function setupTableActions() {
@@ -2057,7 +2199,7 @@ function loadFromStorage() {
 }
 
 document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') { closeModal(); closeImportModal(); closePrintModal(); closeResponseModal(); closeA4Preview(); }
+    if (e.key === 'Escape') { closeModal(); closeImportModal(); closePrintModal(); closeResponseModal(); closeA4Preview(); closeEmployeeManager(); }
 });
 
 document.getElementById('modalOverlay').addEventListener('click', function(e) {
@@ -2206,22 +2348,9 @@ function openResponseModal(recordId) {
     document.getElementById('responseNumber').value = record.responseNumber || record.number;
     document.getElementById('responseDateInput').value = record.responseDate || new Date().toISOString().split('T')[0];
     document.getElementById('responseOrderNumber').value = record.responseOrderNumber || record.orderNumber.replace(PREFIX_ST, '');
-    document.getElementById('responseEmployee').value = record.responseEmployee || '';
-    (function() {
-        var empList = document.getElementById('employeeList');
-        var savedEmp = record.responseEmployee || '';
-        if (savedEmp && empList) {
-            var exists = false;
-            for (var eo = 0; eo < empList.options.length; eo++) {
-                if (empList.options[eo].value === savedEmp) { exists = true; break; }
-            }
-            if (!exists) {
-                var newOpt = document.createElement('option');
-                newOpt.value = savedEmp;
-                empList.appendChild(newOpt);
-            }
-        }
-    })();
+    var savedEmp = record.responseEmployee || '';
+    document.getElementById('responseEmployee').value = savedEmp;
+    addEmployee(savedEmp);
     document.getElementById('responseAttachments').value = record.responseAttachments || '';
     document.getElementById('letterFontSize').value = record.letterFontSize || '14';
     document.getElementById('techSpecNumber').value = record.techSpecNumber || '';
@@ -3310,6 +3439,16 @@ function closeA4Preview() {
     document.getElementById('a4PreviewModal').classList.remove('show');
 }
 
+// Employee manager modal close handlers
+document.addEventListener('DOMContentLoaded', function() {
+    var empMgrModal = document.getElementById('employeeManagerModal');
+    if (empMgrModal) {
+        empMgrModal.addEventListener('click', function(e) {
+            if (e.target === this) closeEmployeeManager();
+        });
+    }
+});
+
 function printA4Letter() {
     // NOTE: To remove date/time from top of page, uncheck 'Headers and footers' in browser print dialog
     var printWindow = window.open('', '_blank');
@@ -3577,6 +3716,7 @@ function saveResponseToRecord() {
     var responseBodyText = document.getElementById('responseBodyText').value;
     var responseNumber = document.getElementById('responseNumber').value;
     var responseEmployee = document.getElementById('responseEmployee').value;
+    addEmployee(responseEmployee);
     var responseOrderNumber = document.getElementById('responseOrderNumber').value;
     var responseDecision = document.getElementById('responseDecision').value;
     var responseAttachments = document.getElementById('responseAttachments').value;
@@ -3718,10 +3858,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
 <datalist id="itemList"></datalist>
-<datalist id="employeeList">
-<option value="Omar Ahmed Maeteeq">
-<option value="Employee 2">
-<option value="Employee 3">
-</datalist>
+<datalist id="employeeList"></datalist>
 </body>
 </html>
