@@ -250,6 +250,7 @@ tr:hover td{color:#fff}
 <base target="_blank">
 <base target="_blank">
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
 <div class="header">
@@ -3402,7 +3403,9 @@ function generateLetterHTML() {
 
     // Signature block
     html += '<div class="letter-signature" style="text-align:left;margin-top:20px;">';
-    html += '<div class="letter-signature-title">مكتب تخطيط الصيانة م.ف.9</div>';
+    var specNum = document.getElementById('techSpecNumber').value.trim();
+    var officeLabel = specNum ? ('مكتب تخطيط الصيانة م.ف.' + specNum) : 'مكتب تخطيط الصيانة';
+    html += '<div class="letter-signature-title">' + officeLabel + '</div>';
     if (employee && employee.trim()) {
         html += '<div class="letter-signature-name">' + employee + '</div>';
     }
@@ -3629,7 +3632,9 @@ function saveAsWord() {
 
     // Signature
     wordHtml += '<div class="letter-signature">';
-    wordHtml += '<div class="letter-signature-title">مكتب تخطيط الصيانة م.ف.9</div>';
+    var specNum = document.getElementById('techSpecNumber').value.trim();
+    var officeLabel = specNum ? ('مكتب تخطيط الصيانة م.ف.' + specNum) : 'مكتب تخطيط الصيانة';
+    wordHtml += '<div class="letter-signature-title">' + officeLabel + '</div>';
     if (employee && employee.trim()) {
         wordHtml += '<div class="letter-signature-name">' + employee + '</div>';
     }
