@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -237,6 +238,7 @@ tr:hover td{color:#fff}
     unicode-bidi: plaintext;
 }
 </style></style>
+<base target="_blank">
 <base target="_blank">
 <base target="_blank">
 <base target="_blank">
@@ -3222,7 +3224,7 @@ document.addEventListener('keydown', function(e) {
             if (start === end) {
                 selected = '09-N-XXXXX';
             }
-            ta.value = before + '‪' + selected + '‬' + after;
+            ta.value = before + '‪' + selected + '‬' + after;‬
             ta.selectionStart = start + 1;
             ta.selectionEnd = start + 1 + selected.length;
             updateLetterPreview();
@@ -3402,7 +3404,9 @@ function generateLetterHTML() {
 
     // Signature block
     html += '<div class="letter-signature" style="text-align:left;margin-top:20px;">';
-    html += '<div class="letter-signature-title">مكتب تخطيط الصيانة م.ف.9</div>';
+    var specNum = document.getElementById('techSpecNumber').value.trim();
+    var officeLabel = specNum ? ('مكتب تخطيط الصيانة م.ف.' + specNum) : 'مكتب تخطيط الصيانة';
+    html += '<div class="letter-signature-title">' + officeLabel + '</div>';
     if (employee && employee.trim()) {
         html += '<div class="letter-signature-name">' + employee + '</div>';
     }
@@ -3629,7 +3633,9 @@ function saveAsWord() {
 
     // Signature
     wordHtml += '<div class="letter-signature">';
-    wordHtml += '<div class="letter-signature-title">مكتب تخطيط الصيانة م.ف.9</div>';
+    var specNum = document.getElementById('techSpecNumber').value.trim();
+    var officeLabel = specNum ? ('مكتب تخطيط الصيانة م.ف.' + specNum) : 'مكتب تخطيط الصيانة';
+    wordHtml += '<div class="letter-signature-title">' + officeLabel + '</div>';
     if (employee && employee.trim()) {
         wordHtml += '<div class="letter-signature-name">' + employee + '</div>';
     }
@@ -3861,3 +3867,4 @@ document.addEventListener('DOMContentLoaded', function() {
 <datalist id="employeeList"></datalist>
 </body>
 </html>
+
