@@ -1,15 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#0d1117">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="MUDARAKA">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="msapplication-TileColor" content="#e94560">
-<link rel="manifest" href="manifest.json">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MUDARAKA - Enhanced</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -242,66 +236,21 @@ tr:hover td{color:#fff}
 #manualItemsText[dir="auto"] {
     unicode-bidi: plaintext;
 }
-
-/* ===== Mobile & Multi-Platform Enhancements ===== */
-/* Safe areas for notched devices */
-.header { padding-top: max(20px, env(safe-area-inset-top)); padding-left: max(40px, env(safe-area-inset-left)); padding-right: max(40px, env(safe-area-inset-right)); }
-.main { padding-bottom: max(25px, env(safe-area-inset-bottom)); }
-/* Touch-friendly buttons */
-.btn, .mtab, .page-btn, .act-btn, .response-type-btn, .dir-toggle-btn { min-height: 44px; min-width: 44px; }
-/* Prevent text selection on UI elements */
-.header, .toolbar, .months, .stat, .mtab, .page-btn, .act-btn, .badge, th { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
-/* Smooth scrolling */
-body { -webkit-overflow-scrolling: touch; overscroll-behavior-y: none; }
-/* Prevent callout on long press */
-body { -webkit-touch-callout: none; }
-/* Capacitor status bar handling */
-@supports (padding-top: env(safe-area-inset-top)) {
-  .header { padding-top: calc(20px + env(safe-area-inset-top)); }
-}
-/* iOS momentum scrolling */
-.table-wrap, .items-grid, #itemsSelectionContainer, .a4-letter-preview { -webkit-overflow-scrolling: touch; }
-/* Disable pull-to-refresh on mobile */
-body { overscroll-behavior-y: contain; }
-/* Better tap highlight */
-* { -webkit-tap-highlight-color: transparent; }
-/* Responsive modal for small screens */
-@media(max-width:480px){
-  .modal-box { margin: 10px; max-height: 95vh; }
-  .form-grid { grid-template-columns: 1fr !important; gap: 10px; }
-  .items-grid { grid-template-columns: 1fr !important; }
-  .response-type-selector { flex-direction: column; }
-  .response-type-btn { width: 100%; }
-  .stats { grid-template-columns: repeat(2, 1fr) !important; }
-  .search-input { width: 100% !important; }
-  .toolbar { flex-direction: column; align-items: stretch; }
-  .search-box { margin-left: 0; width: 100%; }
-  .filter-box { width: 100%; }
-  .filter-select { flex: 1; }
-  .act-btns { flex-wrap: wrap; }
-  .act-btn { min-width: 36px; min-height: 36px; }
-  .letter-to, .letter-cc, .letter-subject, .letter-reference { font-size: 12pt !important; }
-  .a4-letter-page { padding: 30mm 10mm 10mm 10mm !important; font-size: 12pt !important; }
-}
-/* Tablet adjustments */
-@media(min-width:481px) and (max-width:768px){
-  .form-grid { grid-template-columns: 1fr 1fr !important; }
-  .stats { grid-template-columns: repeat(2, 1fr) !important; }
-}
-
-/* Keyboard open adjustments */
-body.keyboard-open .header { position: relative; }
-body.keyboard-open .modal-box { max-height: 60vh; }
-</style>
-<script>
-window.isCapacitor = function() { return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()); };
-window.isMobile = function() { return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.isCapacitor(); };
-// Handle keyboard on mobile
-window.addEventListener('resize', function() {
-    if (window.innerHeight < 500) document.body.classList.add('keyboard-open');
-    else document.body.classList.remove('keyboard-open');
-});
-</script>
+</style></style>
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
 </head>
 <body>
 <div class="header">
@@ -346,7 +295,7 @@ window.addEventListener('resize', function() {
 <span data-en="Reports" data-ar="تقارير">Reports</span>
 </button>
 <div class="search-box">
-<input type="text" class="search-input" id="searchInput" placeholder="Search by number, company, order, PO, item code..." oninput="searchRecords()">
+<input type="text" class="search-input" id="searchInput" placeholder="Search by number, company, order, PO, item..." oninput="searchRecords()">
 <div class="filter-box">
 <select class="filter-select" id="typeFilter" onchange="searchRecords()">
 <option value="" data-en="All Types" data-ar="جميع الأنواع">All Types</option>
@@ -565,7 +514,11 @@ window.addEventListener('resize', function() {
 <div class="form-grid">
 <div class="form-group"><label data-en="Response Number" data-ar="رقم الرد">Response Number</label><input type="text" id="responseNumber" oninput="updateLetterPreview()"></div>
 <div class="form-group"><label data-en="Response Date" data-ar="تاريخ الرد">Response Date</label><input type="date" id="responseDateInput" oninput="updateLetterPreview()"></div>
-<div class="form-group"><label data-en="Responsible Employee" data-ar="الموظف المسؤول">Responsible Employee</label><input type="text" id="responseEmployee" value="Omar Ahmed Maeteeq" oninput="updateLetterPreview()"></div>
+<div class="form-group"><label data-en="Responsible Employee" data-ar="الموظف المسؤول">Responsible Employee</label>
+<div style="display:flex;gap:6px;align-items:center">
+<input type="text" id="responseEmployee" list="employeeList" placeholder="Select or type employee name..." data-en="Select or type employee name..." data-ar="اختر أو اكتب اسم الموظف..." oninput="updateLetterPreview()" style="flex:1">
+<button type="button" class="btn btn-red" onclick="openEmployeeManager()" title="Manage employee names" data-en="Manage" data-ar="إدارة" style="padding:8px 10px;font-size:11px;white-space:nowrap">⚙ Manage</button>
+</div></div>
 <div class="form-group"><label data-en="Order Number (ST\)" data-ar="رقم الأمر (ST\)">Order Number (ST\)</label><div class="pre"><span>ST\</span><input type="text" id="responseOrderNumber" oninput="updateLetterPreview()"></div></div>
 </div>
 
@@ -732,6 +685,32 @@ window.addEventListener('resize', function() {
 </div>
 </div>
 
+<!-- Employee Manager Modal -->
+<div class="modal" id="employeeManagerModal">
+<div class="modal-box" style="max-width:500px">
+<div class="modal-head">
+<h2 data-en="Manage Employee Names" data-ar="إدارة أسماء الموظفين">Manage Employee Names</h2>
+<button class="modal-close" onclick="closeEmployeeManager()">&times;</button>
+</div>
+<div class="modal-body">
+<div id="employeeManagerList" style="max-height:300px;overflow-y:auto"></div>
+<div id="employeeManagerEmpty" style="text-align:center;color:#666;padding:20px;display:none" data-en="No employee names saved yet." data-ar="لا توجد أسماء موظفين محفوظة بعد.">No employee names saved yet.</div>
+<div style="margin-top:15px;padding-top:12px;border-top:1px solid #30363d">
+<div class="form-group full">
+<label data-en="Add New Name" data-ar="إضافة اسم جديد">Add New Name</label>
+<div style="display:flex;gap:6px">
+<input type="text" id="newEmployeeName" placeholder="Type new employee name..." data-en="Type new employee name..." data-ar="اكتب اسم الموظف الجديد..." onkeydown="if(event.key==='Enter'){event.preventDefault();addEmployeeFromManager();}">
+<button type="button" class="btn btn-green" onclick="addEmployeeFromManager()" data-en="Add" data-ar="إضافة" style="white-space:nowrap">+ Add</button>
+</div>
+</div>
+</div>
+</div>
+<div class="modal-foot">
+<button class="btn btn-gray" onclick="closeEmployeeManager()" data-en="Close" data-ar="إغلاق">Close</button>
+</div>
+</div>
+</div>
+
 <!-- A4 Preview Modal -->
 <div class="modal" id="a4PreviewModal">
 <div class="modal-box" style="max-width:950px">
@@ -746,6 +725,117 @@ window.addEventListener('resize', function() {
 
 <script>
 var records = [];
+
+// ===== Persistent employees list (shared dropdown) =====
+var EMPLOYEES_KEY = 'MUDARAKA_employees';
+var employees = [];
+try {
+    var savedEmployees = localStorage.getItem(EMPLOYEES_KEY);
+    if (savedEmployees) {
+        var parsedEmployees = JSON.parse(savedEmployees);
+        if (Array.isArray(parsedEmployees)) employees = parsedEmployees;
+    }
+} catch (e) { console.warn('Could not load employees list:', e); }
+function saveEmployees() {
+    try { localStorage.setItem(EMPLOYEES_KEY, JSON.stringify(employees)); } catch (e) { console.warn('Could not save employees list:', e); }
+}
+function addEmployee(name) {
+    name = (name || '').trim();
+    if (!name) return;
+    for (var i = 0; i < employees.length; i++) {
+        if (employees[i] === name) return;
+    }
+    employees.push(name);
+    saveEmployees();
+    updateEmployeeDropdown();
+}
+function updateEmployeeDropdown() {
+    var datalist = document.getElementById('employeeList');
+    if (!datalist) return;
+    datalist.innerHTML = '';
+    for (var i = 0; i < employees.length; i++) {
+        var opt = document.createElement('option');
+        opt.value = employees[i];
+        datalist.appendChild(opt);
+    }
+}
+
+// ===== Employee Manager (add / delete names) =====
+function openEmployeeManager() {
+    renderEmployeeManager();
+    document.getElementById('employeeManagerModal').classList.add('show');
+}
+
+function closeEmployeeManager() {
+    document.getElementById('employeeManagerModal').classList.remove('show');
+}
+
+function renderEmployeeManager() {
+    var container = document.getElementById('employeeManagerList');
+    var emptyMsg = document.getElementById('employeeManagerEmpty');
+    if (!container) return;
+    container.innerHTML = '';
+    emptyMsg.style.display = employees.length === 0 ? 'block' : 'none';
+    for (var i = 0; i < employees.length; i++) {
+        (function(name) {
+            var row = document.createElement('div');
+            row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-bottom:1px solid #30363d;gap:8px';
+            var nameSpan = document.createElement('span');
+            nameSpan.textContent = name;
+            nameSpan.style.cssText = 'color:#c9d1d9;font-size:13px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr;text-align:left';
+            var delBtn = document.createElement('button');
+            delBtn.type = 'button';
+            delBtn.className = 'btn btn-red';
+            delBtn.style.cssText = 'padding:4px 10px;font-size:11px;flex-shrink:0';
+            delBtn.textContent = '×';
+            delBtn.title = (currentLang === 'ar' ? 'حذف' : 'Delete') + ' ' + name;
+            delBtn.onclick = function() { deleteEmployee(name); };
+            row.appendChild(nameSpan);
+            row.appendChild(delBtn);
+            container.appendChild(row);
+        })(employees[i]);
+    }
+}
+
+function deleteEmployee(name) {
+    var msg = currentLang === 'ar'
+        ? 'هل أنت متأكد من حذف الاسم "' + name + '" من القائمة؟'
+        : 'Delete "' + name + '" from the list?';
+    if (!confirm(msg)) return;
+    var idx = employees.indexOf(name);
+    if (idx !== -1) employees.splice(idx, 1);
+    saveEmployees();
+    updateEmployeeDropdown();
+    renderEmployeeManager();
+    // Clear the field if it currently shows the deleted name
+    var empInput = document.getElementById('responseEmployee');
+    if (empInput && empInput.value.trim() === name) empInput.value = '';
+    showToast((currentLang === 'ar' ? 'تم الحذف: ' : 'Deleted: ') + name, 'success');
+}
+
+function addEmployeeFromManager() {
+    var input = document.getElementById('newEmployeeName');
+    if (!input) return;
+    var name = input.value.trim();
+    if (!name) {
+        showToast(currentLang === 'ar' ? 'اكتب الاسم أولاً' : 'Type a name first', 'error');
+        return;
+    }
+    if (employees.indexOf(name) !== -1) {
+        showToast(currentLang === 'ar' ? 'الاسم موجود مسبقاً' : 'Name already exists', 'error');
+        return;
+    }
+    addEmployee(name);
+    input.value = '';
+    renderEmployeeManager();
+    showToast((currentLang === 'ar' ? 'تمت الإضافة: ' : 'Added: ') + name, 'success');
+}
+// Seed default names on first run
+if (employees.length === 0) {
+    employees = ['Omar Ahmed Maeteeq', 'Employee 2', 'Employee 3'];
+    saveEmployees();
+}
+// ===== End employees list =====
 
 // Load records from localStorage on startup
 try {
@@ -886,7 +976,7 @@ var translations = {
         addBtn: '+ Add Offer/Inquiry/Unable to Remedy',
         clearAll: 'Clear All',
         print: 'Print',
-        searchPlaceholder: 'Search by number, company, order, PO, item code...',
+        searchPlaceholder: 'Search by number, company, order, PO, item...',
         allTypes: 'All Types',
         offer: 'Offer',
         inquiry: 'Inquiry',
@@ -1002,7 +1092,7 @@ var translations = {
         addBtn: '+ إضافة عرض/استفسار/تعذر مداركة',
         clearAll: 'مسح الكل',
         print: 'طباعة',
-        searchPlaceholder: 'البحث بالرقم، الشركة، الأمر، PO، كود البند...',
+        searchPlaceholder: 'البحث بالرقم، الشركة، الأمر، PO، البند...',
         allTypes: 'جميع الأنواع',
         offer: 'عرض',
         inquiry: 'استفسار',
@@ -1100,6 +1190,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupDragDrop();
     updateLanguage();
     setupTableActions();
+    updateEmployeeDropdown();
 });
 
 function setupTableActions() {
@@ -1541,7 +1632,7 @@ function renderTable() {
         var badgeClass = record.type === 'offer' ? 'badge-o' : record.type === 'inquiry' ? 'badge-i' : 'badge-u';
         var typeLabel = record.type === 'offer' ? t('offer') : record.type === 'inquiry' ? t('inquiry') : t('unableToRemedy');
         var globalIndex = start + j + 1;
-        html += '<tr data-id="' + record.id + '"><td>' + globalIndex + '</td><td><span class="badge ' + badgeClass + '">' + typeLabel + '</span></td><td>' + record.number + '</td><td>' + formatDate(record.receiptDate) + '</td><td>' + (record.responseDate ? formatDate(record.responseDate) : '<span style="color:#666">-</span>') + '</td><td>' + (record.hasResponse === true ? '<span class="response-checkmark" title="Has Response">✓</span>' : '<span class="response-none" title="No Response">-</span>') + '</td><td>' + record.orderNumber + '</td><td>' + (record.poNumber || '-') + '</td><td>' + record.company + '</td><td>' + record.items.length + ' ' + '</td><td>' + getItemsDisplay(record, searchTerm) + '</td><td><div class="act-btns"><button class="act-btn btn-view" style="background:#0984e3;color:white" data-id="' + record.id + '" title="View">V</button><button class="act-btn btn-edit" style="background:#00b894;color:white" data-id="' + record.id + '" title="Edit">E</button><button class="act-btn btn-response" style="background:#6c5ce7;color:white" data-id="' + record.id + '" title="Response">R</button><button class="act-btn btn-delete" style="background:#d63031;color:white" data-id="' + record.id + '" title="Delete">D</button></div></td></tr>';
+        html += '<tr data-id="' + record.id + '"><td>' + globalIndex + '</td><td><span class="badge ' + badgeClass + '">' + typeLabel + '</span></td><td>' + record.number + '</td><td>' + formatDate(record.receiptDate) + '</td><td>' + (record.responseDate ? formatDate(record.responseDate) : '<span style="color:#666">-</span>') + '</td><td>' + (record.hasResponse === true ? '<span class="response-checkmark" title="Has Response">✓</span>' : '<span class="response-none" title="No Response">-</span>') + '</td><td>' + record.orderNumber + '</td><td>' + (record.poNumber || '-') + '</td><td>' + record.company + '</td><td>' + getItemsDisplay(record, searchTerm) + '</td><td><div class="act-btns"><button class="act-btn btn-view" style="background:#0984e3;color:white" data-id="' + record.id + '" title="View">V</button><button class="act-btn btn-edit" style="background:#00b894;color:white" data-id="' + record.id + '" title="Edit">E</button><button class="act-btn btn-response" style="background:#6c5ce7;color:white" data-id="' + record.id + '" title="Response">R</button><button class="act-btn btn-delete" style="background:#d63031;color:white" data-id="' + record.id + '" title="Delete">D</button></div></td></tr>';
     }
     tbody.innerHTML = html;
     renderPagination(totalPages, filtered.length);
@@ -1876,68 +1967,7 @@ function generatePrintHTML(records) {
     var subtitle = monthNames[currentMonth] + ' ' + currentYear;
 
     var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + title + '</title>';
-    html += '<style>body{font-family:Arial,sans-serif;padding:20px;color:#333}h1{color:#e94560;margin-bottom:5px}h2{color:#666;font-size:14px;margin-top:0;font-weight:normal}table{width:100%;border-collapse:collapse;margin-top:20px;font-size:11px}th{background:#f0f0f0;padding:8px;text-align:left;border-bottom:2px solid #333;font-weight:bold}td{padding:8px;border-bottom:1px solid #ddd}.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold}.badge-o{background:#00b89433;color:#00b894;border:1px solid #00b894}.badge-i{background:#0984e333;color:#0984e3;border:1px solid #0984e3}.badge-u{background:#d6303133;color:#d63031;border:1px solid #d63031}.header-info{display:flex;justify-content:space-between;margin-bottom:20px;font-size:12px;color:#666}.footer{margin-top:30px;font-size:10px;color:#999;text-align:center;border-top:1px solid #ddd;padding-top:10px}@media print{.no-print{display:none}.a4-preview-header{display:none!important}}
-/* ===== Mobile & Multi-Platform Enhancements ===== */
-/* Safe areas for notched devices */
-.header { padding-top: max(20px, env(safe-area-inset-top)); padding-left: max(40px, env(safe-area-inset-left)); padding-right: max(40px, env(safe-area-inset-right)); }
-.main { padding-bottom: max(25px, env(safe-area-inset-bottom)); }
-/* Touch-friendly buttons */
-.btn, .mtab, .page-btn, .act-btn, .response-type-btn, .dir-toggle-btn { min-height: 44px; min-width: 44px; }
-/* Prevent text selection on UI elements */
-.header, .toolbar, .months, .stat, .mtab, .page-btn, .act-btn, .badge, th { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
-/* Smooth scrolling */
-body { -webkit-overflow-scrolling: touch; overscroll-behavior-y: none; }
-/* Prevent callout on long press */
-body { -webkit-touch-callout: none; }
-/* Capacitor status bar handling */
-@supports (padding-top: env(safe-area-inset-top)) {
-  .header { padding-top: calc(20px + env(safe-area-inset-top)); }
-}
-/* iOS momentum scrolling */
-.table-wrap, .items-grid, #itemsSelectionContainer, .a4-letter-preview { -webkit-overflow-scrolling: touch; }
-/* Disable pull-to-refresh on mobile */
-body { overscroll-behavior-y: contain; }
-/* Better tap highlight */
-* { -webkit-tap-highlight-color: transparent; }
-/* Responsive modal for small screens */
-@media(max-width:480px){
-  .modal-box { margin: 10px; max-height: 95vh; }
-  .form-grid { grid-template-columns: 1fr !important; gap: 10px; }
-  .items-grid { grid-template-columns: 1fr !important; }
-  .response-type-selector { flex-direction: column; }
-  .response-type-btn { width: 100%; }
-  .stats { grid-template-columns: repeat(2, 1fr) !important; }
-  .search-input { width: 100% !important; }
-  .toolbar { flex-direction: column; align-items: stretch; }
-  .search-box { margin-left: 0; width: 100%; }
-  .filter-box { width: 100%; }
-  .filter-select { flex: 1; }
-  .act-btns { flex-wrap: wrap; }
-  .act-btn { min-width: 36px; min-height: 36px; }
-  .letter-to, .letter-cc, .letter-subject, .letter-reference { font-size: 12pt !important; }
-  .a4-letter-page { padding: 30mm 10mm 10mm 10mm !important; font-size: 12pt !important; }
-}
-/* Tablet adjustments */
-@media(min-width:481px) and (max-width:768px){
-  .form-grid { grid-template-columns: 1fr 1fr !important; }
-  .stats { grid-template-columns: repeat(2, 1fr) !important; }
-}
-
-/* Keyboard open adjustments */
-body.keyboard-open .header { position: relative; }
-body.keyboard-open .modal-box { max-height: 60vh; }
-</style>
-<!-- Capacitor Bridge Detection -->
-<script>
-window.isCapacitor = function() { return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()); };
-window.isMobile = function() { return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.isCapacitor(); };
-// Handle keyboard on mobile
-window.addEventListener('resize', function() {
-    if (window.innerHeight < 500) document.body.classList.add('keyboard-open');
-    else document.body.classList.remove('keyboard-open');
-});
-</script>
-</head><body>';
+    html += '<style>body{font-family:Arial,sans-serif;padding:20px;color:#333}h1{color:#e94560;margin-bottom:5px}h2{color:#666;font-size:14px;margin-top:0;font-weight:normal}table{width:100%;border-collapse:collapse;margin-top:20px;font-size:11px}th{background:#f0f0f0;padding:8px;text-align:left;border-bottom:2px solid #333;font-weight:bold}td{padding:8px;border-bottom:1px solid #ddd}.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold}.badge-o{background:#00b89433;color:#00b894;border:1px solid #00b894}.badge-i{background:#0984e333;color:#0984e3;border:1px solid #0984e3}.badge-u{background:#d6303133;color:#d63031;border:1px solid #d63031}.header-info{display:flex;justify-content:space-between;margin-bottom:20px;font-size:12px;color:#666}.footer{margin-top:30px;font-size:10px;color:#999;text-align:center;border-top:1px solid #ddd;padding-top:10px}@media print{.no-print{display:none}.a4-preview-header{display:none!important}}</style></head><body>';
     html += '<h1>' + title + '</h1><h2>' + subtitle + '</h2>';
     html += '<div class="header-info"><div>' + (currentLang === 'ar' ? 'إجمالي السجلات: ' : 'Total Records: ') + records.length + '</div><div>' + new Date().toLocaleDateString() + '</div></div>';
     html += '<table><thead><tr>';
@@ -1970,18 +2000,7 @@ window.addEventListener('resize', function() {
     }
     html += '</tbody></table>';
     html += '<div class="footer">MUDARAKA - ' + (currentLang === 'ar' ? 'نظام إدارة العروض والاستفسارات' : 'Offer & Inquiry Management') + '</div>';
-    html += '
-<!-- Service Worker for PWA Offline Support -->
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('data:text/javascript;base64,' + btoa(`
-    self.addEventListener('install', e => { self.skipWaiting(); });
-    self.addEventListener('activate', e => { e.waitUntil(self.clients.claim()); });
-    self.addEventListener('fetch', e => { e.respondWith(fetch(e.request).catch(() => caches.match(e.request))); });
-  `)).then(reg => console.log('SW registered')).catch(err => console.log('SW failed:', err));
-}
-</script>
-</body></html>';
+    html += '</body></html>';
     return html;
 }
 
@@ -2172,48 +2191,16 @@ function updateItemDropdown() {
 // ============ END SMART DROPDOWN FUNCTIONS ============
 
 function saveToStorage() {
-    try { 
-        var data = { records: records, exportDate: new Date().toISOString() }; 
-        var jsonStr = JSON.stringify(data);
-        localStorage.setItem('MUDARAKA_records', jsonStr);
-        // Capacitor Preferences fallback
-        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Preferences) {
-            window.Capacitor.Plugins.Preferences.set({ key: 'MUDARAKA_records', value: jsonStr });
-        }
-    } catch(e) { console.warn('Storage save failed:', e); }
+    try { var data = { records: records, exportDate: new Date().toISOString() }; localStorage.setItem('MUDARAKA_records', JSON.stringify(data)); } catch(e) { console.warn('LocalStorage not available'); }
 }
 
 function loadFromStorage() {
-    var loaded = false;
-    try { 
-        var stored = localStorage.getItem('MUDARAKA_records'); 
-        if (stored) { 
-            var parsed = JSON.parse(stored); 
-            if (parsed && parsed.records && Array.isArray(parsed.records)) { records = parsed.records; loaded = true; }
-            else if (Array.isArray(parsed)) { records = parsed; loaded = true; }
-        } 
-    } catch(e) { console.warn('LocalStorage load failed:', e); }
-
-    // Capacitor Preferences fallback (async, but we try sync first)
-    if (!loaded && window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Preferences) {
-        window.Capacitor.Plugins.Preferences.get({ key: 'MUDARAKA_records' }).then(function(result) {
-            if (result.value) {
-                try {
-                    var parsed = JSON.parse(result.value);
-                    if (parsed && parsed.records && Array.isArray(parsed.records)) {
-                        records = parsed.records;
-                        renderTable(); updateStats(); generateMonthTabs(); updateSmartDropdowns();
-                    }
-                } catch(e) { console.warn('Capacitor load failed:', e); }
-            }
-        }).catch(function(e) { console.warn('Capacitor Preferences error:', e); });
-    }
-
+    try { var stored = localStorage.getItem('MUDARAKA_records'); if (stored) { var parsed = JSON.parse(stored); if (parsed && parsed.records && Array.isArray(parsed.records)) records = parsed.records; else if (Array.isArray(parsed)) records = parsed; } } catch(e) { console.warn('LocalStorage not available'); }
     updateSmartDropdowns();
 }
 
 document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') { closeModal(); closeImportModal(); closePrintModal(); closeResponseModal(); closeA4Preview(); }
+    if (e.key === 'Escape') { closeModal(); closeImportModal(); closePrintModal(); closeResponseModal(); closeA4Preview(); closeEmployeeManager(); }
 });
 
 document.getElementById('modalOverlay').addEventListener('click', function(e) {
@@ -2362,7 +2349,9 @@ function openResponseModal(recordId) {
     document.getElementById('responseNumber').value = record.responseNumber || record.number;
     document.getElementById('responseDateInput').value = record.responseDate || new Date().toISOString().split('T')[0];
     document.getElementById('responseOrderNumber').value = record.responseOrderNumber || record.orderNumber.replace(PREFIX_ST, '');
-    document.getElementById('responseEmployee').value = record.responseEmployee || 'Omar Ahmed Maeteeq';
+    var savedEmp = record.responseEmployee || '';
+    document.getElementById('responseEmployee').value = savedEmp;
+    addEmployee(savedEmp);
     document.getElementById('responseAttachments').value = record.responseAttachments || '';
     document.getElementById('letterFontSize').value = record.letterFontSize || '14';
     document.getElementById('techSpecNumber').value = record.techSpecNumber || '';
@@ -3414,7 +3403,9 @@ function generateLetterHTML() {
 
     // Signature block
     html += '<div class="letter-signature" style="text-align:left;margin-top:20px;">';
-    html += '<div class="letter-signature-title">مكتب تخطيط الصيانة م.ف.9</div>';
+    var specNum = document.getElementById('techSpecNumber').value.trim();
+    var officeLabel = specNum ? ('مكتب تخطيط الصيانة م.ف.' + specNum) : 'مكتب تخطيط الصيانة';
+    html += '<div class="letter-signature-title">' + officeLabel + '</div>';
     if (employee && employee.trim()) {
         html += '<div class="letter-signature-name">' + employee + '</div>';
     }
@@ -3451,6 +3442,16 @@ function closeA4Preview() {
     document.getElementById('a4PreviewModal').classList.remove('show');
 }
 
+// Employee manager modal close handlers
+document.addEventListener('DOMContentLoaded', function() {
+    var empMgrModal = document.getElementById('employeeManagerModal');
+    if (empMgrModal) {
+        empMgrModal.addEventListener('click', function(e) {
+            if (e.target === this) closeEmployeeManager();
+        });
+    }
+});
+
 function printA4Letter() {
     // NOTE: To remove date/time from top of page, uncheck 'Headers and footers' in browser print dialog
     var printWindow = window.open('', '_blank');
@@ -3475,79 +3476,7 @@ function printA4Letter() {
     printDoc += '.letter-attachments { margin-top: 15px; font-size: 12pt; }';
     printDoc += '.letter-copies { margin-top: 15px; font-size: 11pt; color: #555; }';
     printDoc += '.letter-copies-title { font-weight: bold; margin-bottom: 5px; }';
-    printDoc += '
-/* ===== Mobile & Multi-Platform Enhancements ===== */
-/* Safe areas for notched devices */
-.header { padding-top: max(20px, env(safe-area-inset-top)); padding-left: max(40px, env(safe-area-inset-left)); padding-right: max(40px, env(safe-area-inset-right)); }
-.main { padding-bottom: max(25px, env(safe-area-inset-bottom)); }
-/* Touch-friendly buttons */
-.btn, .mtab, .page-btn, .act-btn, .response-type-btn, .dir-toggle-btn { min-height: 44px; min-width: 44px; }
-/* Prevent text selection on UI elements */
-.header, .toolbar, .months, .stat, .mtab, .page-btn, .act-btn, .badge, th { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
-/* Smooth scrolling */
-body { -webkit-overflow-scrolling: touch; overscroll-behavior-y: none; }
-/* Prevent callout on long press */
-body { -webkit-touch-callout: none; }
-/* Capacitor status bar handling */
-@supports (padding-top: env(safe-area-inset-top)) {
-  .header { padding-top: calc(20px + env(safe-area-inset-top)); }
-}
-/* iOS momentum scrolling */
-.table-wrap, .items-grid, #itemsSelectionContainer, .a4-letter-preview { -webkit-overflow-scrolling: touch; }
-/* Disable pull-to-refresh on mobile */
-body { overscroll-behavior-y: contain; }
-/* Better tap highlight */
-* { -webkit-tap-highlight-color: transparent; }
-/* Responsive modal for small screens */
-@media(max-width:480px){
-  .modal-box { margin: 10px; max-height: 95vh; }
-  .form-grid { grid-template-columns: 1fr !important; gap: 10px; }
-  .items-grid { grid-template-columns: 1fr !important; }
-  .response-type-selector { flex-direction: column; }
-  .response-type-btn { width: 100%; }
-  .stats { grid-template-columns: repeat(2, 1fr) !important; }
-  .search-input { width: 100% !important; }
-  .toolbar { flex-direction: column; align-items: stretch; }
-  .search-box { margin-left: 0; width: 100%; }
-  .filter-box { width: 100%; }
-  .filter-select { flex: 1; }
-  .act-btns { flex-wrap: wrap; }
-  .act-btn { min-width: 36px; min-height: 36px; }
-  .letter-to, .letter-cc, .letter-subject, .letter-reference { font-size: 12pt !important; }
-  .a4-letter-page { padding: 30mm 10mm 10mm 10mm !important; font-size: 12pt !important; }
-}
-/* Tablet adjustments */
-@media(min-width:481px) and (max-width:768px){
-  .form-grid { grid-template-columns: 1fr 1fr !important; }
-  .stats { grid-template-columns: repeat(2, 1fr) !important; }
-}
-
-/* Keyboard open adjustments */
-body.keyboard-open .header { position: relative; }
-body.keyboard-open .modal-box { max-height: 60vh; }
-</style>
-<!-- Capacitor Bridge Detection -->
-<script>
-window.isCapacitor = function() { return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()); };
-window.isMobile = function() { return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.isCapacitor(); };
-// Handle keyboard on mobile
-window.addEventListener('resize', function() {
-    if (window.innerHeight < 500) document.body.classList.add('keyboard-open');
-    else document.body.classList.remove('keyboard-open');
-});
-</script>
-</head><body><div class="letter-container">' + html + '</div>
-<!-- Service Worker for PWA Offline Support -->
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('data:text/javascript;base64,' + btoa(`
-    self.addEventListener('install', e => { self.skipWaiting(); });
-    self.addEventListener('activate', e => { e.waitUntil(self.clients.claim()); });
-    self.addEventListener('fetch', e => { e.respondWith(fetch(e.request).catch(() => caches.match(e.request))); });
-  `)).then(reg => console.log('SW registered')).catch(err => console.log('SW failed:', err));
-}
-</script>
-</body></html>';
+    printDoc += '</style></head><body><div class="letter-container">' + html + '</div></body></html>';
     printWindow.document.write(printDoc);
     printWindow.document.close();
     printWindow.focus();
@@ -3627,68 +3556,7 @@ function saveAsWord() {
     wordHtml += '.letter-attachments { margin-top: 15px; font-size: 12pt; }';
     wordHtml += '.letter-copies { margin-top: 15px; font-size: 11pt; color: #555; }';
     wordHtml += '.letter-copies-title { font-weight: bold; margin-bottom: 5px; }';
-    wordHtml += '
-/* ===== Mobile & Multi-Platform Enhancements ===== */
-/* Safe areas for notched devices */
-.header { padding-top: max(20px, env(safe-area-inset-top)); padding-left: max(40px, env(safe-area-inset-left)); padding-right: max(40px, env(safe-area-inset-right)); }
-.main { padding-bottom: max(25px, env(safe-area-inset-bottom)); }
-/* Touch-friendly buttons */
-.btn, .mtab, .page-btn, .act-btn, .response-type-btn, .dir-toggle-btn { min-height: 44px; min-width: 44px; }
-/* Prevent text selection on UI elements */
-.header, .toolbar, .months, .stat, .mtab, .page-btn, .act-btn, .badge, th { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
-/* Smooth scrolling */
-body { -webkit-overflow-scrolling: touch; overscroll-behavior-y: none; }
-/* Prevent callout on long press */
-body { -webkit-touch-callout: none; }
-/* Capacitor status bar handling */
-@supports (padding-top: env(safe-area-inset-top)) {
-  .header { padding-top: calc(20px + env(safe-area-inset-top)); }
-}
-/* iOS momentum scrolling */
-.table-wrap, .items-grid, #itemsSelectionContainer, .a4-letter-preview { -webkit-overflow-scrolling: touch; }
-/* Disable pull-to-refresh on mobile */
-body { overscroll-behavior-y: contain; }
-/* Better tap highlight */
-* { -webkit-tap-highlight-color: transparent; }
-/* Responsive modal for small screens */
-@media(max-width:480px){
-  .modal-box { margin: 10px; max-height: 95vh; }
-  .form-grid { grid-template-columns: 1fr !important; gap: 10px; }
-  .items-grid { grid-template-columns: 1fr !important; }
-  .response-type-selector { flex-direction: column; }
-  .response-type-btn { width: 100%; }
-  .stats { grid-template-columns: repeat(2, 1fr) !important; }
-  .search-input { width: 100% !important; }
-  .toolbar { flex-direction: column; align-items: stretch; }
-  .search-box { margin-left: 0; width: 100%; }
-  .filter-box { width: 100%; }
-  .filter-select { flex: 1; }
-  .act-btns { flex-wrap: wrap; }
-  .act-btn { min-width: 36px; min-height: 36px; }
-  .letter-to, .letter-cc, .letter-subject, .letter-reference { font-size: 12pt !important; }
-  .a4-letter-page { padding: 30mm 10mm 10mm 10mm !important; font-size: 12pt !important; }
-}
-/* Tablet adjustments */
-@media(min-width:481px) and (max-width:768px){
-  .form-grid { grid-template-columns: 1fr 1fr !important; }
-  .stats { grid-template-columns: repeat(2, 1fr) !important; }
-}
-
-/* Keyboard open adjustments */
-body.keyboard-open .header { position: relative; }
-body.keyboard-open .modal-box { max-height: 60vh; }
-</style>
-<!-- Capacitor Bridge Detection -->
-<script>
-window.isCapacitor = function() { return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()); };
-window.isMobile = function() { return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.isCapacitor(); };
-// Handle keyboard on mobile
-window.addEventListener('resize', function() {
-    if (window.innerHeight < 500) document.body.classList.add('keyboard-open');
-    else document.body.classList.remove('keyboard-open');
-});
-</script>
-</head><body><div class="letter-container">';
+    wordHtml += '</style></head><body><div class="letter-container">';
 
     // Recipients
     wordHtml += '<div class="letter-to">السيد / رئيس قسم التخطيط والمراقبة</div>';
@@ -3764,7 +3632,9 @@ window.addEventListener('resize', function() {
 
     // Signature
     wordHtml += '<div class="letter-signature">';
-    wordHtml += '<div class="letter-signature-title">مكتب تخطيط الصيانة م.ف.9</div>';
+    var specNum = document.getElementById('techSpecNumber').value.trim();
+    var officeLabel = specNum ? ('مكتب تخطيط الصيانة م.ف.' + specNum) : 'مكتب تخطيط الصيانة';
+    wordHtml += '<div class="letter-signature-title">' + officeLabel + '</div>';
     if (employee && employee.trim()) {
         wordHtml += '<div class="letter-signature-name">' + employee + '</div>';
     }
@@ -3786,18 +3656,7 @@ window.addEventListener('resize', function() {
     wordHtml += '<div style="margin-top:15px;font-weight:bold;font-size:11pt;">ملف الصادر بمكتب التخطيط</div>';
     wordHtml += '<div style="font-size:11pt;">ع ، ' + preparerInitial + '</div>';
 
-    wordHtml += '</div>
-<!-- Service Worker for PWA Offline Support -->
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('data:text/javascript;base64,' + btoa(`
-    self.addEventListener('install', e => { self.skipWaiting(); });
-    self.addEventListener('activate', e => { e.waitUntil(self.clients.claim()); });
-    self.addEventListener('fetch', e => { e.respondWith(fetch(e.request).catch(() => caches.match(e.request))); });
-  `)).then(reg => console.log('SW registered')).catch(err => console.log('SW failed:', err));
-}
-</script>
-</body></html>';
+    wordHtml += '</div></body></html>';
 
     // Create blob and download
     var blob = new Blob(['', wordHtml], { type: 'application/msword' });
@@ -3862,6 +3721,7 @@ function saveResponseToRecord() {
     var responseBodyText = document.getElementById('responseBodyText').value;
     var responseNumber = document.getElementById('responseNumber').value;
     var responseEmployee = document.getElementById('responseEmployee').value;
+    addEmployee(responseEmployee);
     var responseOrderNumber = document.getElementById('responseOrderNumber').value;
     var responseDecision = document.getElementById('responseDecision').value;
     var responseAttachments = document.getElementById('responseAttachments').value;
@@ -4003,16 +3863,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
 <datalist id="itemList"></datalist>
-
-<!-- Service Worker for PWA Offline Support -->
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('data:text/javascript;base64,' + btoa(`
-    self.addEventListener('install', e => { self.skipWaiting(); });
-    self.addEventListener('activate', e => { e.waitUntil(self.clients.claim()); });
-    self.addEventListener('fetch', e => { e.respondWith(fetch(e.request).catch(() => caches.match(e.request))); });
-  `)).then(reg => console.log('SW registered')).catch(err => console.log('SW failed:', err));
-}
-</script>
+<datalist id="employeeList"></datalist>
 </body>
 </html>
